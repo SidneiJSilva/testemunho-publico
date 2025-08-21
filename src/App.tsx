@@ -39,7 +39,13 @@ const App = () => {
 					<Header />
 				</Box>
 
-				<TpRoutes />
+				<Box
+					sx={{
+						padding: "1rem",
+					}}
+				>
+					<TpRoutes />
+				</Box>
 			</Box>
 		</RouterWrapper>
 	);

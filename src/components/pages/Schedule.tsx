@@ -1,7 +1,7 @@
 const Schedule = () => {
 	return (
 		<div>
-			<h1>Schedule</h1>
+			<div>Schedule</div>
 			<p>Welcome to the Schedule!</p>
 		</div>
 	);
