@@ -23,7 +23,10 @@ const storeCreator: StateCreator<PeopleStore> = (set) => ({
 
 const createStoreWithMiddleware = isDevelopment
 	? create<PeopleStore>()(
-			devtools(storeCreator as any, { name: "My Store" } as DevtoolsOptions)
+			devtools(
+				storeCreator as any,
+				{ name: "TP People Store" } as DevtoolsOptions
+			)
 	  )
 	: create<PeopleStore>()(storeCreator);
 
