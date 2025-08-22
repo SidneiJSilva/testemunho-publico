@@ -5,18 +5,20 @@ import { useState } from "react";
 import { navigationData } from "@/constants/navigation";
 import { isMobileScreen } from "@/utils/screenSize";
 import type { NavigationItem } from "@/types";
-import { useNavigate } from "react-router-dom";
+import { useConditionalNavigate } from "@/hooks";
 
 export default function ColorToggleButton() {
 	const [page, setPage] = useState(navigationData[0].value);
-	const navigate = useNavigate();
+	const { navigateTo } = useConditionalNavigate();
 
 	const handleChange = (
 		_event: React.MouseEvent<HTMLElement>,
 		newValue: string
 	) => {
+		if (newValue === null) return;
+
 		setPage(newValue);
-		navigate(`../${newValue}`);
+		navigateTo(newValue);
 	};
 
 	const buttonsToRender: NavigationItem[] = isMobileScreen()
