@@ -14,4 +14,6 @@ export const colors = {
 	box3: "#a87c4f",
 	box4: "#fef002",
 	box5: "#a8a9ad",
+	iconMale: "#1400caff",
+	iconFemale: "#6a0057ff",
 };
