@@ -4,6 +4,7 @@ import TpRoutes from "@/routes/TpRoutes";
 import Header from "@/components/organisms/Header";
 
 import { BrowserRouter } from "react-router-dom";
+import { colors } from "@/constants/colors";
 import "./App.css";
 
 const isDevelopment = import.meta.env.DEV;
@@ -11,14 +12,15 @@ const isDevelopment = import.meta.env.DEV;
 const AppLayout = () => (
 	<Box
 		sx={{
-			height: "100vh",
+			minHeight: "100vh",
 			display: "flex",
 			flexDirection: "column",
+			backgroundColor: colors.background,
 		}}
 	>
 		<Box
 			sx={{
-				backgroundColor: "#fff",
+				backgroundColor: colors.background,
 				padding: "1rem",
 				boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
 				zIndex: 10,
@@ -29,11 +31,7 @@ const AppLayout = () => (
 			<Header />
 		</Box>
 
-		<Box
-			sx={{
-				padding: "1rem",
-			}}
-		>
+		<Box sx={{ padding: "1rem", flex: 1, overflowY: "auto" }}>
 			<TpRoutes />
 		</Box>
 	</Box>

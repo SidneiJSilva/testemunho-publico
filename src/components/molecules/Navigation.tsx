@@ -27,14 +27,29 @@ export default function ColorToggleButton() {
 
 	return (
 		<ToggleButtonGroup
-			color="primary"
 			value={page}
 			size="small"
 			exclusive
 			onChange={handleChange}
 		>
 			{buttonsToRender.map((item) => (
-				<ToggleButton value={item.value}>{item.label}</ToggleButton>
+				<ToggleButton
+					key={item.value}
+					value={item.value}
+					sx={{
+						color: "white",
+						borderColor: "rgba(255, 255, 255, 0.3)",
+						"&.Mui-selected": {
+							color: "white",
+							backgroundColor: "rgba(255, 255, 255, 0.2)",
+						},
+						"&:hover": {
+							backgroundColor: "rgba(255, 255, 255, 0.1)",
+						},
+					}}
+				>
+					{item.label}
+				</ToggleButton>
 			))}
 		</ToggleButtonGroup>
 	);

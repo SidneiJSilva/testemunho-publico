@@ -3,7 +3,7 @@ import SupabaseService from "@/services/supabase-service";
 
 export class PeopleService {
 	static async fetchPeople(): Promise<PeopleInterface[]> {
-		const { data, error } = await SupabaseService.from("people_view")
+		const { data, error } = await SupabaseService.from("people_tp_view")
 			.select("*")
 			.order("firstname");
 

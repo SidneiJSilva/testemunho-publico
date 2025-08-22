@@ -3,9 +3,11 @@ import type { PeopleInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
 
 export const usePeople = () => {
-	const { setPeople } = peopleStore();
+	const { setPeople, setIsLoading } = peopleStore();
 
 	const fetchPeople = async () => {
+		setIsLoading(true);
+
 		try {
 			const people = await PeopleService.fetchPeople();
 
@@ -18,6 +20,8 @@ export const usePeople = () => {
 		} catch (error) {
 			console.error("Failed to fetch people:", error);
 			throw error;
+		} finally {
+			setIsLoading(false);
 		}
 	};
 

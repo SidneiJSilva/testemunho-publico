@@ -3,4 +3,8 @@ export interface PeopleInterface {
 	firstname: string;
 	lastname: string;
 	fullname?: string;
+	tpapproved: boolean;
+	techskills: boolean;
+	regularpionner: boolean;
+	gender: "male" | "female";
 }
