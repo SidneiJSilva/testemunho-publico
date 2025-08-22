@@ -4,7 +4,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useState } from "react";
 import { navigationData } from "@/constants/navigation";
 import { isMobileScreen } from "@/utils/screenSize";
-import type { NavigationItem } from "@/types";
+import type { NavigationItem } from "@/interfaces";
 import { useConditionalNavigate } from "@/hooks";
 
 export default function ColorToggleButton() {
