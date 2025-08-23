@@ -1,49 +1,65 @@
+import React from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import GenderSwitch from "@/components/atoms/inputs/GenderSwitch";
 import CheckSwitch from "@/components/atoms/inputs/CheckSwitch";
 import Checkbox from "@mui/material/Checkbox";
+import UpdateIcon from "@mui/icons-material/Update";
+import HistoryIcon from "@mui/icons-material/History";
 import { Box, Stack, Typography } from "@mui/material";
 
 import { useState } from "react";
 import { type PeopleInterface } from "@/interfaces";
 import { colors } from "@/constants/colors";
+import { formatDate } from "@/utils/dates";
 
 export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
+	const { availability } = person;
+
 	const [isFemale, setIsFemale] = useState(person.gender === "female");
 	const [isTPApproved, setIsTPApproved] = useState(person.tpapproved);
 	const [isTechSkilled, setIsTechSkilled] = useState(person.techskills);
 	const [isPionner, setIsPionner] = useState(person.regularpionner);
-	const [mondayMorning, setMondayMorning] = useState(person.mondaymorning);
-	const [mondayAfternoon, setMondayAfernoon] = useState(person.mondayafternoon);
-	const [tuesdayMorning, setTuesdayMorning] = useState(person.tuesdaymorning);
+	const [mondayMorning, setMondayMorning] = useState(
+		availability.mondaymorning
+	);
+	const [mondayAfternoon, setMondayAfernoon] = useState(
+		availability.mondayafternoon
+	);
+	const [tuesdayMorning, setTuesdayMorning] = useState(
+		availability.tuesdaymorning
+	);
 	const [tuesdayAfternoon, setTuesdayAfternoon] = useState(
-		person.tuesdayafternoon
+		availability.tuesdayafternoon
 	);
 	const [wednesdayMorning, setWednesdayMorning] = useState(
-		person.wednesdaymorning
+		availability.wednesdaymorning
 	);
 	const [wednesdayAfternoon, setWednesdayAfternoon] = useState(
-		person.wednesdayafternoon
+		availability.wednesdayafternoon
 	);
 	const [thursdayMorning, setThursdayMorning] = useState(
-		person.thursdaymorning
+		availability.thursdaymorning
 	);
 	const [thursdayAfternoon, setThursdayAfternoon] = useState(
-		person.thursdayafternoon
+		availability.thursdayafternoon
 	);
-	const [fridayMorning, setFridayMorning] = useState(person.fridaymorning);
+	const [fridayMorning, setFridayMorning] = useState(
+		availability.fridaymorning
+	);
 	const [fridayAfternoon, setFridayAfternoon] = useState(
-		person.fridayafternoon
+		availability.fridayafternoon
 	);
 	const [saturdayMorning, setSaturdayMorning] = useState(
-		person.saturdaymorning
+		availability.saturdaymorning
 	);
 	const [saturdayAfternoon, setSaturdayAfternoon] = useState(
-		person.saturdayafternoon
+		availability.saturdayafternoon
 	);
-	const [sundayMorning, setSundayMorning] = useState(person.sundaymorning);
+	const [sundayMorning, setSundayMorning] = useState(
+		availability.sundaymorning
+	);
 	const [sundayAfternoon, setSundayAfternoon] = useState(
-		person.sundayafternoon
+		availability.sundayafternoon
 	);
 
 	return (
@@ -122,7 +138,6 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							columnGap: "1rem",
 							rowGap: 0,
 							padding: ".5rem",
-							// background: `linear-gradient(to bottom, ${colors.box2Light}, ${colors.box2})`,
 							backgroundColor: colors.backgroundLight,
 							borderRadius: ".5rem",
 						}}
@@ -462,6 +477,74 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								}}
 							/>
 						</Box>
+					</Box>
+
+					<Typography variant="h6" color="white">
+						Ausências
+					</Typography>
+
+					<Box
+						sx={{
+							display: "grid",
+							// 1. Mude para 3 colunas. "auto" faz a coluna do ícone se ajustar ao conteúdo.
+							gridTemplateColumns: "1fr 1fr auto",
+							alignItems: "center", // Alinha os itens verticalmente
+							gap: "0.5rem", // Adiciona um espaçamento entre as colunas
+							padding: ".5rem",
+							backgroundColor: colors.backgroundLight,
+							borderRadius: ".5rem",
+						}}
+					>
+						<Typography variant="caption" fontWeight={700} color={colors.text}>
+							Início
+						</Typography>
+
+						<Typography variant="caption" fontWeight={700} color={colors.text}>
+							Fim
+						</Typography>
+
+						<Typography variant="caption" fontWeight={700} color={colors.text}>
+							Status
+						</Typography>
+
+						{person.absences?.length > 0 ? (
+							person.absences.map((absence) => (
+								<React.Fragment key={absence.id}>
+									<Typography
+										variant="body1"
+										fontWeight={700}
+										color={absence.active ? colors.text : colors.box5}
+									>
+										{formatDate(absence.startdate)}
+									</Typography>
+
+									<Typography
+										variant="body1"
+										fontWeight={700}
+										color={absence.active ? colors.text : colors.box5}
+									>
+										{formatDate(absence.enddate)}
+									</Typography>
+
+									<Box sx={{ display: "flex", justifyContent: "center" }}>
+										{absence.active ? (
+											<UpdateIcon sx={{ color: colors.text }} />
+										) : (
+											<HistoryIcon sx={{ color: colors.box5 }} />
+										)}
+									</Box>
+								</React.Fragment>
+							))
+						) : (
+							<Typography
+								variant="body1"
+								fontWeight={700}
+								color={colors.text}
+								sx={{ gridColumn: "1 / 4", textAlign: "center" }}
+							>
+								Sem ausências
+							</Typography>
+						)}
 					</Box>
 				</Stack>
 			)}

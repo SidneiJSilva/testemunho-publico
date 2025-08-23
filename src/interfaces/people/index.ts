@@ -1,12 +1,4 @@
-export interface PeopleInterface {
-	peopleid: number;
-	firstname: string;
-	lastname: string;
-	fullname?: string;
-	tpapproved: boolean;
-	techskills: boolean;
-	regularpionner: boolean;
-	gender: "male" | "female";
+export interface PeopleAvailability {
 	mondaymorning: boolean;
 	mondayafternoon: boolean;
 	tuesdaymorning: boolean;
@@ -21,4 +13,24 @@ export interface PeopleInterface {
 	saturdayafternoon: boolean;
 	sundaymorning: boolean;
 	sundayafternoon: boolean;
+}
+
+export interface PeopleAbsence {
+	id: number;
+	active: boolean;
+	startdate: string;
+	enddate: string;
+}
+
+export interface PeopleInterface {
+	peopleid: number;
+	firstname: string;
+	lastname: string;
+	fullname?: string;
+	tpapproved: boolean;
+	techskills: boolean;
+	regularpionner: boolean;
+	gender: "male" | "female";
+	availability: PeopleAvailability;
+	absences: PeopleAbsence[];
 }
