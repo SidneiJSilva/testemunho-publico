@@ -6,9 +6,13 @@ import { navigationData } from "@/constants/navigation";
 import { isMobileScreen } from "@/utils/screenSize";
 import type { NavigationItem } from "@/interfaces";
 import { useConditionalNavigate } from "@/hooks";
+import { useLocation } from "react-router-dom";
 
 export default function ColorToggleButton() {
-	const [page, setPage] = useState(navigationData[0].value);
+	const location = useLocation();
+	const [page, setPage] = useState(
+		location.pathname.replace("/", "") || navigationData[0].value
+	);
 	const { navigateTo } = useConditionalNavigate();
 
 	const handleChange = (

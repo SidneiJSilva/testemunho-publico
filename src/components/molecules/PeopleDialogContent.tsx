@@ -6,6 +6,7 @@ import { Box, Stack, Typography } from "@mui/material";
 
 import { useState } from "react";
 import { type PeopleInterface } from "@/interfaces";
+import { colors } from "@/constants/colors";
 
 export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 	const [isFemale, setIsFemale] = useState(person.gender === "female");
@@ -107,357 +108,363 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 				/>
 			</Box>
 
-			<Stack spacing={2}>
-				<Typography variant="h6" color="white">
-					Disponibilidade
-				</Typography>
+			{isTPApproved && (
+				<Stack spacing={2}>
+					<Typography variant="h6" color="white">
+						Disponibilidade
+					</Typography>
 
-				<Box
-					sx={{
-						display: "grid",
-						gridTemplateRows: "repeat(4, 1fr)",
-						gridAutoFlow: "column",
-						columnGap: "2.5rem", // espaço só entre colunas
-						rowGap: 0,
-					}}
-				>
-					{/* MONDAY */}
 					<Box
 						sx={{
 							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
+							gridTemplateRows: "repeat(4, 1fr)",
+							gridAutoFlow: "column",
+							columnGap: "1rem",
+							rowGap: 0,
+							padding: ".5rem",
+							// background: `linear-gradient(to bottom, ${colors.box2Light}, ${colors.box2})`,
+							backgroundColor: colors.backgroundLight,
+							borderRadius: ".5rem",
 						}}
 					>
-						<Typography variant="body1" color="white">
-							Segunda
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={mondayMorning}
-									color="warning"
-									onChange={(e) => setMondayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
+						{/* MONDAY */}
+						<Box
 							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
 							}}
-						/>
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Segunda
+							</Typography>
 
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={mondayAfternoon}
-									color="warning"
-									onChange={(e) => setMondayAfernoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={mondayMorning}
+										color="success"
+										onChange={(e) => setMondayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={mondayAfternoon}
+										color="success"
+										onChange={(e) => setMondayAfernoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* TUESDAY */}
+						<Box
 							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
 							}}
-						/>
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Terça
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={tuesdayMorning}
+										color="success"
+										onChange={(e) => setTuesdayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={tuesdayAfternoon}
+										color="success"
+										onChange={(e) => setTuesdayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* WEDNESDAY */}
+						<Box
+							sx={{
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Quarta
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={wednesdayMorning}
+										color="success"
+										onChange={(e) => setWednesdayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={wednesdayAfternoon}
+										color="success"
+										onChange={(e) => setWednesdayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* QUINTA */}
+						<Box
+							sx={{
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Quinta
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={thursdayMorning}
+										color="success"
+										onChange={(e) => setThursdayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={thursdayAfternoon}
+										color="success"
+										onChange={(e) => setThursdayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* FRIDAY */}
+						<Box
+							sx={{
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Sexta
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={fridayMorning}
+										color="success"
+										onChange={(e) => setFridayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={fridayAfternoon}
+										color="success"
+										onChange={(e) => setFridayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* SATURDAY */}
+						<Box
+							sx={{
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Sábado
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={saturdayMorning}
+										color="success"
+										onChange={(e) => setSaturdayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={saturdayAfternoon}
+										color="success"
+										onChange={(e) => setSaturdayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
+
+						{/* SUNDAY */}
+						<Box
+							sx={{
+								display: "grid",
+								gridTemplateColumns: "repeat(3, 1fr)",
+								gap: "1rem",
+								alignItems: "center",
+							}}
+						>
+							<Typography variant="body1" fontWeight={700} color={colors.text}>
+								Domingo
+							</Typography>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={sundayMorning}
+										color="success"
+										onChange={(e) => setSundayMorning(e.target.checked)}
+									/>
+								}
+								label="Manhã"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+
+							<FormControlLabel
+								control={
+									<Checkbox
+										checked={sundayAfternoon}
+										color="success"
+										onChange={(e) => setSundayAfternoon(e.target.checked)}
+									/>
+								}
+								label="Tarde"
+								sx={{
+									"& .MuiFormControlLabel-label": {
+										fontSize: "0.75rem",
+										color: colors.text,
+									},
+								}}
+							/>
+						</Box>
 					</Box>
-
-					{/* TUESDAY */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Terça
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={tuesdayMorning}
-									color="warning"
-									onChange={(e) => setTuesdayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={tuesdayAfternoon}
-									color="warning"
-									onChange={(e) => setTuesdayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-
-					{/* WEDNESDAY */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Quarta
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={wednesdayMorning}
-									color="warning"
-									onChange={(e) => setWednesdayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={wednesdayAfternoon}
-									color="warning"
-									onChange={(e) => setWednesdayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-
-					{/* QUINTA */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Quinta
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={thursdayMorning}
-									color="warning"
-									onChange={(e) => setThursdayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={thursdayAfternoon}
-									color="warning"
-									onChange={(e) => setThursdayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-
-					{/* FRIDAY */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Sexta
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={fridayMorning}
-									color="warning"
-									onChange={(e) => setFridayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={fridayAfternoon}
-									color="warning"
-									onChange={(e) => setFridayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-
-					{/* SATURDAY */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Sábado
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={saturdayMorning}
-									color="warning"
-									onChange={(e) => setSaturdayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={saturdayAfternoon}
-									color="warning"
-									onChange={(e) => setSaturdayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-
-					{/* SUNDAY */}
-					<Box
-						sx={{
-							display: "grid",
-							gridTemplateColumns: "repeat(3, 1fr)",
-							gap: "1rem",
-							alignItems: "center",
-						}}
-					>
-						<Typography variant="body1" color="white">
-							Domingo
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={sundayMorning}
-									color="warning"
-									onChange={(e) => setSundayMorning(e.target.checked)}
-								/>
-							}
-							label="Manhã"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={sundayAfternoon}
-									color="warning"
-									onChange={(e) => setSundayAfternoon(e.target.checked)}
-								/>
-							}
-							label="Tarde"
-							sx={{
-								"& .MuiFormControlLabel-label": {
-									fontSize: "0.75rem",
-									color: "white",
-								},
-							}}
-						/>
-					</Box>
-				</Box>
-			</Stack>
+				</Stack>
+			)}
 		</Box>
 	);
 }
