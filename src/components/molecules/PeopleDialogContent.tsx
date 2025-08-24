@@ -5,16 +5,28 @@ import CheckSwitch from "@/components/atoms/inputs/CheckSwitch";
 import Checkbox from "@mui/material/Checkbox";
 import UpdateIcon from "@mui/icons-material/Update";
 import HistoryIcon from "@mui/icons-material/History";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Box, Stack, Typography } from "@mui/material";
 
+import { usePeople } from "@/hooks";
 import { useState } from "react";
 import { type PeopleInterface } from "@/interfaces";
 import { colors } from "@/constants/colors";
 import { formatDate } from "@/utils/dates";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/pt-br";
 
 export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 	const { availability } = person;
+	const { addNewAbsence } = usePeople();
 
+	// Constants
 	const [isFemale, setIsFemale] = useState(person.gender === "female");
 	const [isTPApproved, setIsTPApproved] = useState(person.tpapproved);
 	const [isTechSkilled, setIsTechSkilled] = useState(person.techskills);
@@ -61,6 +73,35 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 	const [sundayAfternoon, setSundayAfternoon] = useState(
 		availability.sundayafternoon
 	);
+	const [newStartDate, setNewStartDate] = useState<Dayjs | null>(dayjs());
+	const [newEndDate, setNewEndDate] = useState<Dayjs | null>(dayjs());
+	const [showNewAbsence, setShowNewAbsence] = useState(false);
+
+	// Functions
+	const handleClickAbsence = async () => {
+		let startDate = "";
+		let endDate = "";
+
+		if (newStartDate) {
+			startDate = new Date(newStartDate.toString()).toISOString();
+		}
+
+		if (newEndDate) {
+			endDate = new Date(newEndDate.toString()).toISOString();
+		}
+
+		const payload = {
+			peopleId: person.peopleid,
+			startDate: startDate,
+			endDate: endDate,
+		};
+
+		await addNewAbsence(payload);
+
+		setShowNewAbsence(false);
+		setNewStartDate(dayjs());
+		setNewEndDate(dayjs());
+	};
 
 	return (
 		<Box
@@ -479,17 +520,112 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						</Box>
 					</Box>
 
-					<Typography variant="h6" color="white">
-						Ausências
-					</Typography>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="space-between"
+					>
+						<Typography variant="h6" color="white">
+							Ausências
+						</Typography>
+
+						{!showNewAbsence && (
+							<Box
+								sx={{
+									backgroundColor: "white",
+									borderRadius: 100,
+								}}
+							>
+								<IconButton
+									color="warning"
+									onClick={() => setShowNewAbsence(true)}
+								>
+									<AddIcon />
+								</IconButton>
+							</Box>
+						)}
+					</Box>
+
+					{showNewAbsence && (
+						<Box
+							sx={{
+								display: "flex",
+								alignItems: "center",
+								gap: "0.5rem",
+								padding: ".5rem",
+								paddingTop: ".75rem",
+								backgroundColor: colors.backgroundLight,
+								borderRadius: ".5rem",
+							}}
+						>
+							<LocalizationProvider
+								dateAdapter={AdapterDayjs}
+								adapterLocale="pt-br"
+							>
+								<DatePicker
+									label="Data inicial"
+									format="DD/MM/YYYY"
+									minDate={dayjs()}
+									slotProps={{
+										textField: { size: "small" },
+									}}
+									value={newStartDate}
+									onChange={(newValue) => {
+										setNewStartDate(newValue);
+										setNewEndDate(newValue);
+									}}
+								/>
+							</LocalizationProvider>
+
+							<LocalizationProvider
+								dateAdapter={AdapterDayjs}
+								adapterLocale="pt-br"
+							>
+								<DatePicker
+									label="Data final"
+									format="DD/MM/YYYY"
+									minDate={newStartDate || dayjs()}
+									slotProps={{
+										textField: { size: "small" },
+									}}
+									value={newEndDate}
+									onChange={(newValue) => setNewEndDate(newValue)}
+								/>
+							</LocalizationProvider>
+
+							<Box
+								sx={{
+									backgroundColor: "white",
+									borderRadius: 2,
+								}}
+							>
+								<IconButton
+									color="error"
+									onClick={() => setShowNewAbsence(false)}
+								>
+									<CloseIcon />
+								</IconButton>
+							</Box>
+
+							<Box
+								sx={{
+									backgroundColor: "white",
+									borderRadius: 2,
+								}}
+							>
+								<IconButton color="success" onClick={handleClickAbsence}>
+									<SaveIcon />
+								</IconButton>
+							</Box>
+						</Box>
+					)}
 
 					<Box
 						sx={{
 							display: "grid",
-							// 1. Mude para 3 colunas. "auto" faz a coluna do ícone se ajustar ao conteúdo.
 							gridTemplateColumns: "1fr 1fr auto",
-							alignItems: "center", // Alinha os itens verticalmente
-							gap: "0.5rem", // Adiciona um espaçamento entre as colunas
+							alignItems: "center",
+							gap: "0.5rem",
 							padding: ".5rem",
 							backgroundColor: colors.backgroundLight,
 							borderRadius: ".5rem",

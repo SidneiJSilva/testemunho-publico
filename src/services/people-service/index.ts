@@ -1,4 +1,4 @@
-import type { PeopleInterface } from "@/interfaces";
+import type { PeopleInterface, AbsenceInterface } from "@/interfaces";
 import SupabaseService from "@/services/supabase-service";
 
 export class PeopleService {
@@ -12,5 +12,21 @@ export class PeopleService {
 		}
 
 		return data as unknown as PeopleInterface[];
+	}
+
+	static async addNewAbsence({
+		peopleId,
+		startDate,
+		endDate,
+	}: AbsenceInterface) {
+		const { error } = await SupabaseService.from("tp_absences").insert({
+			people_id: peopleId,
+			start_date: startDate,
+			end_date: endDate,
+		});
+
+		if (error) {
+			throw new Error(`Error fetching territories: ${error.message}`);
+		}
 	}
 }

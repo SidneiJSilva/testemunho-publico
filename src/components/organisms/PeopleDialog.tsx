@@ -8,7 +8,7 @@ import {
 	Button,
 	CircularProgress,
 } from "@mui/material";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 import { type PeopleInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
@@ -23,11 +23,11 @@ export default function PeopleDialog({
 	peopleData: PeopleInterface;
 	closeDialog: () => void;
 }) {
-	const { isLoading } = peopleStore();
+	const { isDialogLoading } = peopleStore();
 
 	return (
 		<Dialog open={openDialog} onClose={closeDialog} maxWidth="sm" fullWidth>
-			{isLoading && (
+			{isDialogLoading && (
 				<Box
 					sx={{
 						position: "absolute",

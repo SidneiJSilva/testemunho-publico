@@ -1,12 +1,12 @@
 import { PeopleService } from "@/services";
-import type { PeopleInterface } from "@/interfaces";
+import type { PeopleInterface, AbsenceInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
 
 export const usePeople = () => {
-	const { setPeople, setIsLoading } = peopleStore();
+	const { setPeople, setIsLoading, setIsDialogLoading } = peopleStore();
 
-	const fetchPeople = async () => {
-		setIsLoading(true);
+	const fetchPeople = async (showLoading: boolean = true) => {
+		if (showLoading) setIsLoading(true);
 
 		try {
 			const people = await PeopleService.fetchPeople();
@@ -21,9 +21,24 @@ export const usePeople = () => {
 			console.error("Failed to fetch people:", error);
 			throw error;
 		} finally {
-			setIsLoading(false);
+			if (showLoading) setIsLoading(false);
 		}
 	};
 
-	return { fetchPeople };
+	const addNewAbsence = async (payload: AbsenceInterface) => {
+		setIsDialogLoading(true);
+
+		try {
+			await PeopleService.addNewAbsence(payload);
+
+			fetchPeople(false);
+		} catch (error) {
+			console.error("Failed insert absence:", error);
+			throw error;
+		} finally {
+			setIsDialogLoading(false);
+		}
+	};
+
+	return { fetchPeople, addNewAbsence };
 };

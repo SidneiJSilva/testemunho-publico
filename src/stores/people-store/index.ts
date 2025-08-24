@@ -8,17 +8,21 @@ const isDevelopment = import.meta.env.DEV;
 interface PeopleStore {
 	people: PeopleInterface[];
 	isLoading: boolean;
+	isDialogLoading: boolean;
 
 	setPeople: (people: PeopleInterface[]) => void;
 	setIsLoading: (isLoading: boolean) => void;
+	setIsDialogLoading: (isDialogLoading: boolean) => void;
 }
 
 const storeCreator: StateCreator<PeopleStore> = (set) => ({
 	people: [],
 	isLoading: false,
+	isDialogLoading: false,
 
 	setPeople: (people: PeopleInterface[]) => set({ people }),
 	setIsLoading: (isLoading: boolean) => set({ isLoading }),
+	setIsDialogLoading: (isDialogLoading: boolean) => set({ isDialogLoading }),
 });
 
 const createStoreWithMiddleware = isDevelopment
