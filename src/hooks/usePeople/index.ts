@@ -31,7 +31,7 @@ export const usePeople = () => {
 		try {
 			await PeopleService.addNewAbsence(payload);
 
-			fetchPeople(false);
+			await fetchPeople(false);
 		} catch (error) {
 			console.error("Failed insert absence:", error);
 			throw error;
