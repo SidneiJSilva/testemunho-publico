@@ -66,6 +66,7 @@ export default function PeopleDialogAbsences({
 						sx={{
 							backgroundColor: "white",
 							borderRadius: 100,
+							marginRight: ".4rem",
 						}}
 					>
 						<IconButton color="warning" onClick={() => setShowNewAbsence(true)}>
