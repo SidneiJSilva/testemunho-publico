@@ -22,6 +22,11 @@ export interface PeopleAbsence {
 	enddate: string;
 }
 
+export interface PeopleFamily {
+	peopleId: number;
+	fullName: string;
+}
+
 export interface PeopleInterface {
 	peopleid: number;
 	firstname: string;
@@ -33,4 +38,10 @@ export interface PeopleInterface {
 	gender: "male" | "female";
 	availability: PeopleAvailability;
 	absences: PeopleAbsence[];
+	familymembers: PeopleFamily[];
+}
+
+export interface NewMemberFamilyInterface {
+	peopleId: number;
+	familyMemberId: number;
 }

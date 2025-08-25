@@ -1,5 +1,9 @@
 import { PeopleService } from "@/services";
-import type { PeopleInterface, AbsenceInterface } from "@/interfaces";
+import type {
+	PeopleInterface,
+	AbsenceInterface,
+	NewMemberFamilyInterface,
+} from "@/interfaces";
 import { peopleStore } from "@/stores";
 
 export const usePeople = () => {
@@ -40,5 +44,20 @@ export const usePeople = () => {
 		}
 	};
 
-	return { fetchPeople, addNewAbsence };
+	const addNewFamilyMember = async (payload: NewMemberFamilyInterface) => {
+		setIsDialogLoading(true);
+
+		try {
+			await PeopleService.addNewFamilyMember(payload);
+
+			await fetchPeople(false);
+		} catch (error) {
+			console.error("Failed insert absence:", error);
+			throw error;
+		} finally {
+			setIsDialogLoading(false);
+		}
+	};
+
+	return { fetchPeople, addNewAbsence, addNewFamilyMember };
 };
