@@ -9,10 +9,12 @@ import {
 	CircularProgress,
 } from "@mui/material";
 import { Box } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 
 import { type PeopleInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
 import { colors } from "@/constants/colors";
+import { useState } from "react";
 
 export default function PeopleDialog({
 	openDialog,
@@ -24,10 +26,21 @@ export default function PeopleDialog({
 	closeDialog: () => void;
 }) {
 	const { isDialogLoading } = peopleStore();
+	const [isSaveLoading, setIsSaveLoading] = useState(false);
+
+	const saveAndClose = async () => {
+		console.log("saving ...");
+		setIsSaveLoading(true);
+
+		setTimeout(() => {
+			setIsSaveLoading(false);
+			closeDialog();
+		}, 1000);
+	};
 
 	return (
 		<Dialog open={openDialog} onClose={closeDialog} maxWidth="sm" fullWidth>
-			{isDialogLoading && (
+			{(isDialogLoading || isSaveLoading) && (
 				<Box
 					sx={{
 						position: "absolute",
@@ -58,9 +71,19 @@ export default function PeopleDialog({
 						justifyContent: "end",
 						width: "100%",
 						alignItems: "center",
+						gap: 2,
 					}}
 				>
 					<Button onClick={closeDialog}>Fechar</Button>
+
+					<Button
+						variant="contained"
+						color="success"
+						endIcon={<SaveIcon />}
+						onClick={saveAndClose}
+					>
+						Salvar
+					</Button>
 				</Box>
 			</DialogActions>
 		</Dialog>
