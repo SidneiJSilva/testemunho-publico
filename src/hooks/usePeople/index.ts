@@ -52,12 +52,27 @@ export const usePeople = () => {
 
 			await fetchPeople(false);
 		} catch (error) {
-			console.error("Failed insert absence:", error);
+			console.error("Failed insert family:", error);
 			throw error;
 		} finally {
 			setIsDialogLoading(false);
 		}
 	};
 
-	return { fetchPeople, addNewAbsence, addNewFamilyMember };
+	const removeFamilyMember = async (payload: NewMemberFamilyInterface) => {
+		setIsDialogLoading(true);
+
+		try {
+			await PeopleService.removeFamilyMember(payload);
+
+			await fetchPeople(false);
+		} catch (error) {
+			console.error("Failed removing family:", error);
+			throw error;
+		} finally {
+			setIsDialogLoading(false);
+		}
+	};
+
+	return { fetchPeople, addNewAbsence, addNewFamilyMember, removeFamilyMember };
 };

@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	FormControl,
 	IconButton,
 	InputLabel,
@@ -27,16 +28,16 @@ export default function PeopleDialogFamily({
 }) {
 	const [newMemberFamilyId, setNewMemberFamilyId] = useState("");
 	const [showNewFamilyMember, setShowNewFamilyMember] = useState(false);
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [familyMemberToDelete, setFamilyMemberToDelete] = useState<
+		number | null
+	>(null);
 
 	const { people } = peopleStore();
-	const { addNewFamilyMember } = usePeople();
+	const { addNewFamilyMember, removeFamilyMember } = usePeople();
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setNewMemberFamilyId(event.target.value as string);
-	};
-
-	const handleDeleteFamilyMember = (id: number) => {
-		console.log("delete", id);
 	};
 
 	const handleAddNewFamilyMember = async () => {
@@ -47,6 +48,29 @@ export default function PeopleDialogFamily({
 
 		await addNewFamilyMember(payload);
 		setNewMemberFamilyId("");
+	};
+
+	const handleDeleteFamilyMember = (familyMembderId: number) => {
+		setFamilyMemberToDelete(familyMembderId);
+		setShowConfirmation(true);
+	};
+
+	const cancelDelete = () => {
+		setFamilyMemberToDelete(null);
+		setShowConfirmation(false);
+	};
+
+	const confirmDelete = async () => {
+		if (!familyMemberToDelete) return;
+
+		const payload = {
+			peopleId: person.peopleid,
+			familyMemberId: familyMemberToDelete,
+		};
+
+		await removeFamilyMember(payload);
+		setFamilyMemberToDelete(null);
+		setShowConfirmation(false);
 	};
 
 	return (
@@ -81,6 +105,7 @@ export default function PeopleDialogFamily({
 								key={member.peopleId}
 								size="small"
 								label={member.fullName}
+								disabled={showConfirmation}
 								onDelete={() => handleDeleteFamilyMember(member.peopleId)}
 							/>
 						))}
@@ -104,6 +129,7 @@ export default function PeopleDialogFamily({
 										id="family-member-select"
 										value={newMemberFamilyId}
 										label="Familiar"
+										disabled={showConfirmation}
 										onChange={handleChange}
 									>
 										{people.map((p) => (
@@ -113,7 +139,7 @@ export default function PeopleDialogFamily({
 								</FormControl>
 
 								<IconButton
-									disabled={!newMemberFamilyId}
+									disabled={!newMemberFamilyId || showConfirmation}
 									color="success"
 									onClick={handleAddNewFamilyMember}
 									sx={{
@@ -128,6 +154,7 @@ export default function PeopleDialogFamily({
 
 						<IconButton
 							color={showNewFamilyMember ? "error" : "warning"}
+							disabled={showConfirmation}
 							onClick={() => setShowNewFamilyMember(!showNewFamilyMember)}
 							sx={{
 								backgroundColor: "white",
@@ -139,6 +166,46 @@ export default function PeopleDialogFamily({
 					</Box>
 				</Box>
 			</Box>
+
+			{showConfirmation && (
+				<Box
+					sx={{
+						display: "flex",
+						padding: ".5rem",
+						alignItems: "center",
+						justifyContent: "space-between",
+						gap: 2,
+						backgroundColor: colors.backgroundLight,
+						borderRadius: ".5rem",
+						flexDirection: { xs: "column", sm: "row" },
+					}}
+				>
+					<Typography variant="body1" color={colors.text}>
+						Excluir{" "}
+						{
+							person.familymembers.find(
+								(p) => p.peopleId === familyMemberToDelete
+							)?.fullName
+						}
+						?
+					</Typography>
+
+					<Box
+						sx={{
+							display: "flex",
+							gap: 2,
+						}}
+					>
+						<Button color="primary" onClick={cancelDelete}>
+							Cancelar
+						</Button>
+
+						<Button variant="contained" color="warning" onClick={confirmDelete}>
+							Confirmar
+						</Button>
+					</Box>
+				</Box>
+			)}
 		</Stack>
 	);
 }

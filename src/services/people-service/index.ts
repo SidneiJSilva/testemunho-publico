@@ -57,4 +57,26 @@ export class PeopleService {
 			throw new Error(`Error fetching territories: ${error2.message}`);
 		}
 	}
+
+	static async removeFamilyMember({
+		peopleId,
+		familyMemberId,
+	}: NewMemberFamilyInterface) {
+		const { error } = await SupabaseService.from("tp_allowed_families")
+			.delete()
+			.eq("people_id_1", peopleId)
+			.eq("people_id_2", familyMemberId);
+
+		const { error: error2 } = await SupabaseService.from("tp_allowed_families")
+			.delete()
+			.eq("people_id_1", familyMemberId)
+			.eq("people_id_2", peopleId);
+
+		if (error) {
+			throw new Error(`Error fetching territories: ${error.message}`);
+		}
+		if (error2) {
+			throw new Error(`Error fetching territories: ${error2.message}`);
+		}
+	}
 }
