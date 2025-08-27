@@ -19,7 +19,7 @@ const PeopleList = ({ people }: { people: PeopleInterface[] }) => {
 					sm: "repeat(2, 1fr)",
 					md: "repeat(3, 1fr)",
 				},
-				gap: "2rem",
+				gap: "1.5rem",
 			}}
 		>
 			{people.map((person) => (
