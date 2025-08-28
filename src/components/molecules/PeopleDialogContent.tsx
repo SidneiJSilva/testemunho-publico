@@ -19,6 +19,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 	const [isTPApproved, setIsTPApproved] = useState(person.tpapproved);
 	const [isTechSkilled, setIsTechSkilled] = useState(person.techskills);
 	const [isPionner, setIsPionner] = useState(person.regularpionner);
+	const [isActive, setIsActive] = useState(person.active);
 	const [mondayMorning, setMondayMorning] = useState(
 		availability.mondaymorning
 	);
@@ -120,6 +121,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="Pioneiro"
+					sx={{ color: "white" }}
+				/>
+
+				<FormControlLabel
+					control={
+						<CheckSwitch
+							checked={isActive}
+							onChange={(e) => setIsActive(e.target.checked)}
+						/>
+					}
+					label="Ativo"
 					sx={{ color: "white" }}
 				/>
 			</Box>
