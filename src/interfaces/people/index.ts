@@ -28,6 +28,7 @@ export interface PeopleFamily {
 }
 
 export interface PeopleInterface {
+	active: boolean;
 	peopleid: number;
 	firstname: string;
 	lastname: string;
