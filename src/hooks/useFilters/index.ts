@@ -1,6 +1,21 @@
 import { peopleStore } from "@/stores";
 import { useEffect } from "react";
 
+type Person = {
+	tpapproved: boolean;
+	techskills: boolean;
+	regularpionner: boolean;
+	gender: "male" | "female";
+};
+
+const filterStrategies: Record<string, (person: Person) => boolean> = {
+	tpapproved: (person) => person.tpapproved,
+	techskills: (person) => person.techskills,
+	regularpionner: (person) => person.regularpionner,
+	male: (person) => person.gender === "male",
+	female: (person) => person.gender === "female",
+};
+
 export const useFilters = () => {
 	const { sortBy, setSortBy, setSortedPeopleList, people } = peopleStore();
 
@@ -11,19 +26,11 @@ export const useFilters = () => {
 	const applyFilter = (sortKey: string | null) => {
 		setSortBy(sortKey);
 
-		let sortedPeople = [...people];
+		const filterFn = sortKey ? filterStrategies[sortKey] : null;
 
-		if (sortKey) {
-			sortedPeople = people.filter((person) => {
-				if (sortKey === "tpapproved") return person.tpapproved;
-				if (sortKey === "techskills") return person.techskills;
-				if (sortKey === "regularpionner") return person.regularpionner;
-				if (sortKey === "male") return person.gender === "male";
-				if (sortKey === "female") return person.gender === "female";
-			});
-		}
+		const filteredPeople = filterFn ? people.filter(filterFn) : [...people];
 
-		setSortedPeopleList(sortedPeople);
+		setSortedPeopleList(filteredPeople);
 	};
 
 	return { applyFilter };
