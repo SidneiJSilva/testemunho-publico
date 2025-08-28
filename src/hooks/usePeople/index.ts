@@ -5,18 +5,9 @@ import type {
 	NewMemberFamilyInterface,
 } from "@/interfaces";
 import { peopleStore } from "@/stores";
-import { useEffect } from "react";
 
 export const usePeople = () => {
-	const {
-		setPeople,
-		sortBy,
-		setIsLoading,
-		setIsDialogLoading,
-		setSortBy,
-		people,
-		setSortedPeopleList,
-	} = peopleStore();
+	const { setPeople, setIsLoading, setIsDialogLoading } = peopleStore();
 
 	const fetchPeople = async (showLoading: boolean = true) => {
 		if (showLoading) setIsLoading(true);

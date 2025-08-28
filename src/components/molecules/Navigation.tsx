@@ -104,31 +104,33 @@ export default function ColorToggleButton() {
 				))}
 			</ToggleButtonGroup>
 
-			<ToggleButtonGroup
-				value={sortBy}
-				size="small"
-				exclusive
-				onChange={handleFilterChange}
-			>
-				{filters.map((filter) => (
-					<ToggleButton
-						value={filter.value}
-						sx={{
-							color: "white",
-							borderColor: "rgba(255, 255, 255, 0.3)",
-							"&.Mui-selected": {
+			{page === "people" && (
+				<ToggleButtonGroup
+					value={sortBy}
+					size="small"
+					exclusive
+					onChange={handleFilterChange}
+				>
+					{filters.map((filter) => (
+						<ToggleButton
+							value={filter.value}
+							sx={{
 								color: "white",
-								backgroundColor: "rgba(255, 255, 255, 0.2)",
-							},
-							"&:hover": {
-								backgroundColor: "rgba(255, 255, 255, 0.1)",
-							},
-						}}
-					>
-						{filter.item}
-					</ToggleButton>
-				))}
-			</ToggleButtonGroup>
+								borderColor: "rgba(255, 255, 255, 0.3)",
+								"&.Mui-selected": {
+									color: "white",
+									backgroundColor: "rgba(255, 255, 255, 0.2)",
+								},
+								"&:hover": {
+									backgroundColor: "rgba(255, 255, 255, 0.1)",
+								},
+							}}
+						>
+							{filter.item}
+						</ToggleButton>
+					))}
+				</ToggleButtonGroup>
+			)}
 		</Box>
 	);
 }
