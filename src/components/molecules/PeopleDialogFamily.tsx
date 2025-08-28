@@ -75,7 +75,7 @@ export default function PeopleDialogFamily({
 
 	return (
 		<Stack spacing={2}>
-			<Typography variant="h6" color="white">
+			<Typography variant="h6" color={colors.textSubtitles}>
 				Família
 			</Typography>
 
@@ -84,9 +84,12 @@ export default function PeopleDialogFamily({
 					display: "flex",
 					padding: ".5rem",
 					gap: 2,
-					backgroundColor: colors.backgroundLight,
+					backgroundColor: "white",
 					borderRadius: ".5rem",
+					border: 1,
+					borderColor: colors.border,
 					flexDirection: { xs: "column", sm: "row" },
+					alignItems: "center",
 				}}
 			>
 				<Box
@@ -96,7 +99,7 @@ export default function PeopleDialogFamily({
 						display: "flex",
 						flexWrap: "wrap",
 						gap: 1,
-						alignItems: "flex-start",
+						alignItems: "center",
 					}}
 				>
 					{person.familymembers &&
@@ -107,6 +110,17 @@ export default function PeopleDialogFamily({
 								label={member.fullName}
 								disabled={showConfirmation}
 								onDelete={() => handleDeleteFamilyMember(member.peopleId)}
+								sx={{
+									backgroundColor: colors.secondary,
+									color: colors.primary,
+									"& .MuiChip-deleteIcon": {
+										color: colors.primary,
+										transition: "color 0.2s ease-in-out",
+									},
+									"& .MuiChip-deleteIcon:hover": {
+										color: colors.error,
+									},
+								}}
 							/>
 						))}
 				</Box>
@@ -175,7 +189,9 @@ export default function PeopleDialogFamily({
 						alignItems: "center",
 						justifyContent: "space-between",
 						gap: 2,
-						backgroundColor: colors.backgroundLight,
+						backgroundColor: "white",
+						border: 1,
+						borderColor: colors.border,
 						borderRadius: ".5rem",
 						flexDirection: { xs: "column", sm: "row" },
 					}}

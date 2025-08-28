@@ -14,6 +14,7 @@ import { useConditionalNavigate, useFilters } from "@/hooks";
 import { useLocation } from "react-router-dom";
 import { Box } from "@mui/material";
 import { peopleStore } from "@/stores";
+import { colors } from "@/constants/colors";
 
 export default function ColorToggleButton() {
 	const location = useLocation();
@@ -88,14 +89,15 @@ export default function ColorToggleButton() {
 						key={item.value}
 						value={item.value}
 						sx={{
-							color: "white",
-							borderColor: "rgba(255, 255, 255, 0.3)",
 							"&.Mui-selected": {
-								color: "white",
-								backgroundColor: "rgba(255, 255, 255, 0.2)",
+								color: colors.primary,
+								backgroundColor: colors.secondary,
 							},
 							"&:hover": {
-								backgroundColor: "rgba(255, 255, 255, 0.1)",
+								backgroundColor: colors.border,
+							},
+							"&.Mui-selected:hover": {
+								backgroundColor: colors.background,
 							},
 						}}
 					>
@@ -115,14 +117,15 @@ export default function ColorToggleButton() {
 						<ToggleButton
 							value={filter.value}
 							sx={{
-								color: "white",
-								borderColor: "rgba(255, 255, 255, 0.3)",
 								"&.Mui-selected": {
-									color: "white",
-									backgroundColor: "rgba(255, 255, 255, 0.2)",
+									color: colors.primary,
+									backgroundColor: colors.secondary,
 								},
 								"&:hover": {
-									backgroundColor: "rgba(255, 255, 255, 0.1)",
+									backgroundColor: colors.border,
+								},
+								"&.Mui-selected:hover": {
+									backgroundColor: colors.background,
 								},
 							}}
 						>

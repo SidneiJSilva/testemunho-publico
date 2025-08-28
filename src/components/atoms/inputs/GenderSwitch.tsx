@@ -15,7 +15,7 @@ const GenderSwitch = styled((props: SwitchProps) => (
 			color: "#fff",
 			transform: "translateX(22px)",
 			"& .MuiSwitch-thumb": {
-				backgroundColor: "#e91e63",
+				backgroundColor: "#EC4899",
 			},
 			"& .MuiSwitch-thumb:before": {
 				backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
@@ -29,7 +29,7 @@ const GenderSwitch = styled((props: SwitchProps) => (
 		},
 	},
 	"& .MuiSwitch-thumb": {
-		backgroundColor: "#1400ca",
+		backgroundColor: "#3B82F6",
 		width: 32,
 		height: 32,
 		"&::before": {

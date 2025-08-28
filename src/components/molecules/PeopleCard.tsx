@@ -11,6 +11,7 @@ import { Box } from "@mui/material";
 
 import { useState } from "react";
 import { type PeopleInterface } from "@/interfaces";
+import { colors } from "@/constants/colors";
 
 const PeopleCard = ({ person }: { person: PeopleInterface }) => {
 	const [openDialog, setOpenDialog] = useState(false);
@@ -25,14 +26,15 @@ const PeopleCard = ({ person }: { person: PeopleInterface }) => {
 				key={person.peopleid}
 				title={person.fullname}
 				sx={{
-					background: "linear-gradient(to bottom, #00dafc, #00adef)",
+					backgroundColor: colors.backgroundHeader,
 					color: "#00455a",
 					cursor: "pointer",
 					transition: "all 0.3s ease",
 					":hover": {
 						boxShadow: "0 12px 24px rgba(0,0,0,0.4)",
 						transform: "scale(1.05)",
-						background: "linear-gradient(to bottom, #74e5ff, #74d1fc)",
+						backgroundColor: colors.secondary,
+						color: colors.primary,
 					},
 				}}
 				onClick={() => setOpenDialog(true)}
