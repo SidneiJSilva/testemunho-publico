@@ -86,9 +86,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="Gênero"
-					sx={{
-						color: "white",
-					}}
+					sx={{ color: colors.text }}
 				/>
 
 				<FormControlLabel
@@ -99,7 +97,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="TP Aprovado"
-					sx={{ color: "white" }}
+					sx={{ color: colors.text }}
 				/>
 
 				<FormControlLabel
@@ -110,7 +108,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="Tecnologia"
-					sx={{ color: "white" }}
+					sx={{ color: colors.text }}
 				/>
 
 				<FormControlLabel
@@ -121,7 +119,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="Pioneiro"
-					sx={{ color: "white" }}
+					sx={{ color: colors.text }}
 				/>
 
 				<FormControlLabel
@@ -132,13 +130,13 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 						/>
 					}
 					label="Ativo"
-					sx={{ color: "white" }}
+					sx={{ color: colors.text }}
 				/>
 			</Box>
 
 			{isTPApproved && (
 				<Stack spacing={2}>
-					<Typography variant="h6" color="white">
+					<Typography variant="h6" color={colors.textSubtitles}>
 						Disponibilidade
 					</Typography>
 
@@ -150,8 +148,10 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							columnGap: "1rem",
 							rowGap: 0,
 							padding: ".5rem",
-							backgroundColor: colors.backgroundLight,
+							border: 1,
+							borderColor: colors.border,
 							borderRadius: ".5rem",
+							backgroundColor: "white",
 						}}
 					>
 						{/* MONDAY */}
@@ -171,7 +171,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={mondayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setMondayMorning(e.target.checked)}
 									/>
 								}
@@ -188,7 +192,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={mondayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setMondayAfernoon(e.target.checked)}
 									/>
 								}
@@ -219,7 +227,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={tuesdayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setTuesdayMorning(e.target.checked)}
 									/>
 								}
@@ -236,7 +248,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={tuesdayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setTuesdayAfternoon(e.target.checked)}
 									/>
 								}
@@ -267,7 +283,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={wednesdayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setWednesdayMorning(e.target.checked)}
 									/>
 								}
@@ -284,7 +304,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={wednesdayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setWednesdayAfternoon(e.target.checked)}
 									/>
 								}
@@ -315,7 +339,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={thursdayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setThursdayMorning(e.target.checked)}
 									/>
 								}
@@ -332,7 +360,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={thursdayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setThursdayAfternoon(e.target.checked)}
 									/>
 								}
@@ -363,7 +395,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={fridayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setFridayMorning(e.target.checked)}
 									/>
 								}
@@ -380,7 +416,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={fridayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setFridayAfternoon(e.target.checked)}
 									/>
 								}
@@ -411,7 +451,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={saturdayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setSaturdayMorning(e.target.checked)}
 									/>
 								}
@@ -428,7 +472,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={saturdayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setSaturdayAfternoon(e.target.checked)}
 									/>
 								}
@@ -459,7 +507,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={sundayMorning}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setSundayMorning(e.target.checked)}
 									/>
 								}
@@ -476,7 +528,11 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 								control={
 									<Checkbox
 										checked={sundayAfternoon}
-										color="success"
+										sx={{
+											"&.Mui-checked": {
+												color: colors.primary,
+											},
+										}}
 										onChange={(e) => setSundayAfternoon(e.target.checked)}
 									/>
 								}

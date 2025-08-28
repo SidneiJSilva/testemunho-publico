@@ -15,7 +15,7 @@ const CheckSwitch = styled((props: SwitchProps) => (
 			color: "#fff",
 			transform: "translateX(22px)",
 			"& .MuiSwitch-thumb": {
-				backgroundColor: "#4caf50",
+				backgroundColor: "#4F46E5",
 			},
 			"& .MuiSwitch-thumb:before": {
 				backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 24 24"><path fill="${encodeURIComponent(

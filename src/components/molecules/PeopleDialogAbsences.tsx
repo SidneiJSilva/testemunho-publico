@@ -57,7 +57,7 @@ export default function PeopleDialogAbsences({
 	return (
 		<>
 			<Box display="flex" alignItems="center" justifyContent="space-between">
-				<Typography variant="h6" color="white">
+				<Typography variant="h6" color={colors.textSubtitles}>
 					Ausências
 				</Typography>
 
@@ -84,7 +84,9 @@ export default function PeopleDialogAbsences({
 						gap: "0.5rem",
 						padding: ".5rem",
 						paddingTop: ".75rem",
-						backgroundColor: colors.backgroundLight,
+						backgroundColor: "white",
+						border: 1,
+						borderColor: colors.border,
 						borderRadius: ".5rem",
 					}}
 				>
@@ -129,8 +131,8 @@ export default function PeopleDialogAbsences({
 							borderRadius: 2,
 						}}
 					>
-						<IconButton color="error" onClick={() => setShowNewAbsence(false)}>
-							<CloseIcon />
+						<IconButton color="success" onClick={handleClickAbsence}>
+							<SaveIcon />
 						</IconButton>
 					</Box>
 
@@ -140,8 +142,8 @@ export default function PeopleDialogAbsences({
 							borderRadius: 2,
 						}}
 					>
-						<IconButton color="success" onClick={handleClickAbsence}>
-							<SaveIcon />
+						<IconButton color="error" onClick={() => setShowNewAbsence(false)}>
+							<CloseIcon />
 						</IconButton>
 					</Box>
 				</Box>
@@ -154,7 +156,9 @@ export default function PeopleDialogAbsences({
 					alignItems: "center",
 					gap: "0.5rem",
 					padding: ".5rem",
-					backgroundColor: colors.backgroundLight,
+					backgroundColor: "white",
+					border: 1,
+					borderColor: colors.border,
 					borderRadius: ".5rem",
 				}}
 			>

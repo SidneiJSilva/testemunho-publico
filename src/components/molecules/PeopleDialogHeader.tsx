@@ -10,11 +10,8 @@ export function PeopleDialogHeader({ person }: { person: PeopleInterface }) {
 			justifyContent="space-between"
 			alignItems="center"
 			padding={2}
-			sx={{
-				background: `linear-gradient(to bottom, ${colors.generalBackground} , ${colors.background})`,
-			}}
 		>
-			<Typography variant="h5" fontWeight="bold" color="white">
+			<Typography variant="h5" fontWeight="bold" color={colors.text}>
 				{person.fullname}
 			</Typography>
 		</Box>
