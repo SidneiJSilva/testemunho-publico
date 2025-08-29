@@ -5,10 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import { usePeople } from "@/hooks";
 import { useState } from "react";
@@ -23,11 +24,16 @@ export default function PeopleDialogAbsences({
 }: {
 	person: PeopleInterface;
 }) {
-	const { addNewAbsence } = usePeople();
+	const { addNewAbsence, removeAbsence } = usePeople();
 
-	const [showNewAbsence, setShowNewAbsence] = useState(false);
+	const [showNewAbsence, setShowNewAbsence] = useState<boolean>(false);
 	const [newStartDate, setNewStartDate] = useState<Dayjs | null>(dayjs());
 	const [newEndDate, setNewEndDate] = useState<Dayjs | null>(dayjs());
+	const [showDeleteConfirmation, setShowDeleteConfirmation] =
+		useState<boolean>(false);
+	const [absenceToDeleteId, setAbsenceToDeleteId] = useState<number | null>(
+		null
+	);
 
 	const handleClickAbsence = async () => {
 		let startDate = "";
@@ -52,6 +58,25 @@ export default function PeopleDialogAbsences({
 		setShowNewAbsence(false);
 		setNewStartDate(dayjs());
 		setNewEndDate(dayjs());
+	};
+
+	const cancelDelete = () => {
+		setAbsenceToDeleteId(null);
+		setShowDeleteConfirmation(false);
+	};
+
+	const handleDeleteClick = (absenceId: number) => {
+		setShowDeleteConfirmation(true);
+		setAbsenceToDeleteId(absenceId);
+	};
+
+	const confirmDelete = async () => {
+		if (absenceToDeleteId) {
+			await removeAbsence(absenceToDeleteId);
+		}
+
+		setAbsenceToDeleteId(null);
+		setShowDeleteConfirmation(false);
 	};
 
 	return (
@@ -152,7 +177,7 @@ export default function PeopleDialogAbsences({
 			<Box
 				sx={{
 					display: "grid",
-					gridTemplateColumns: "1fr 1fr auto",
+					gridTemplateColumns: "1fr 1fr auto auto",
 					alignItems: "center",
 					gap: "0.5rem",
 					padding: ".5rem",
@@ -174,13 +199,26 @@ export default function PeopleDialogAbsences({
 					Status
 				</Typography>
 
+				<Typography variant="caption" fontWeight={700} color={colors.text}>
+					Actions
+				</Typography>
+
 				{person.absences?.length > 0 ? (
 					person.absences.map((absence) => (
 						<React.Fragment key={absence.id}>
 							<Typography
 								variant="body1"
 								fontWeight={700}
-								color={absence.active ? colors.text : colors.box5}
+								sx={{
+									backgroundColor:
+										absence.id === absenceToDeleteId ? colors.secondary : "",
+									color:
+										absence.id === absenceToDeleteId
+											? colors.primary
+											: absence.active
+											? colors.text
+											: colors.box5,
+								}}
 							>
 								{formatDate(absence.startdate)}
 							</Typography>
@@ -188,16 +226,47 @@ export default function PeopleDialogAbsences({
 							<Typography
 								variant="body1"
 								fontWeight={700}
-								color={absence.active ? colors.text : colors.box5}
+								sx={{
+									backgroundColor:
+										absence.id === absenceToDeleteId ? colors.secondary : "",
+									color:
+										absence.id === absenceToDeleteId
+											? colors.primary
+											: absence.active
+											? colors.text
+											: colors.box5,
+								}}
 							>
 								{formatDate(absence.enddate)}
 							</Typography>
 
-							<Box sx={{ display: "flex", justifyContent: "center" }}>
+							<Box
+								sx={{
+									display: "flex",
+									justifyContent: "center",
+									backgroundColor:
+										absence.id === absenceToDeleteId ? colors.secondary : "",
+								}}
+							>
 								{absence.active ? (
 									<UpdateIcon sx={{ color: colors.text }} />
 								) : (
 									<HistoryIcon sx={{ color: colors.box5 }} />
+								)}
+							</Box>
+
+							<Box sx={{ display: "flex", justifyContent: "center" }}>
+								{absence.active ? (
+									<IconButton
+										disabled={showDeleteConfirmation}
+										size="small"
+										color="error"
+										sx={{ cursor: "pointer", padding: 0 }}
+									>
+										<DeleteIcon onClick={() => handleDeleteClick(absence.id)} />
+									</IconButton>
+								) : (
+									"-"
 								)}
 							</Box>
 						</React.Fragment>
@@ -213,6 +282,47 @@ export default function PeopleDialogAbsences({
 					</Typography>
 				)}
 			</Box>
+
+			{showDeleteConfirmation && (
+				<Box
+					sx={{
+						display: "flex",
+						padding: ".5rem",
+						alignItems: "center",
+						justifyContent: "space-between",
+						gap: 2,
+						backgroundColor: "white",
+						border: 1,
+						borderColor: colors.border,
+						borderRadius: ".5rem",
+						flexDirection: { xs: "column", sm: "row" },
+					}}
+				>
+					<Typography variant="body1" color={colors.text}>
+						Confirma?
+					</Typography>
+
+					<Box
+						sx={{
+							display: "flex",
+							gap: 2,
+						}}
+					>
+						<Button color="primary" size="small" onClick={cancelDelete}>
+							Cancelar
+						</Button>
+
+						<Button
+							variant="contained"
+							color="warning"
+							size="small"
+							onClick={confirmDelete}
+						>
+							Confirmar
+						</Button>
+					</Box>
+				</Box>
+			)}
 		</>
 	);
 }

@@ -212,11 +212,16 @@ export default function PeopleDialogFamily({
 							gap: 2,
 						}}
 					>
-						<Button color="primary" onClick={cancelDelete}>
+						<Button color="primary" size="small" onClick={cancelDelete}>
 							Cancelar
 						</Button>
 
-						<Button variant="contained" color="warning" onClick={confirmDelete}>
+						<Button
+							variant="contained"
+							size="small"
+							color="warning"
+							onClick={confirmDelete}
+						>
 							Confirmar
 						</Button>
 					</Box>
