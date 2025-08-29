@@ -34,6 +34,16 @@ export class PeopleService {
 		}
 	}
 
+	static async removeAbsence(absenceId: number) {
+		const { error } = await SupabaseService.from("tp_absences")
+			.delete()
+			.eq("id", absenceId);
+
+		if (error) {
+			throw new Error(`Error fetching territories: ${error.message}`);
+		}
+	}
+
 	static async addNewFamilyMember({
 		peopleId,
 		familyMemberId,

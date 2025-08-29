@@ -44,6 +44,21 @@ export const usePeople = () => {
 		}
 	};
 
+	const removeAbsence = async (absenceId: number) => {
+		setIsDialogLoading(true);
+
+		try {
+			await PeopleService.removeAbsence(absenceId);
+
+			await fetchPeople(false);
+		} catch (error) {
+			console.error("Failed insert absence:", error);
+			throw error;
+		} finally {
+			setIsDialogLoading(false);
+		}
+	};
+
 	const addNewFamilyMember = async (payload: NewMemberFamilyInterface) => {
 		setIsDialogLoading(true);
 
@@ -74,5 +89,11 @@ export const usePeople = () => {
 		}
 	};
 
-	return { fetchPeople, addNewAbsence, addNewFamilyMember, removeFamilyMember };
+	return {
+		fetchPeople,
+		addNewAbsence,
+		addNewFamilyMember,
+		removeFamilyMember,
+		removeAbsence,
+	};
 };
