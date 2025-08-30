@@ -7,31 +7,31 @@ const isDevelopment = import.meta.env.DEV;
 
 interface PeopleStore {
 	people: PeopleInterface[];
-	sortedPeopleList: PeopleInterface[];
+	filteredPeopleList: PeopleInterface[];
 	isLoading: boolean;
 	isDialogLoading: boolean;
-	sortBy: string | null;
+	filterBy: string[];
 
 	setPeople: (people: PeopleInterface[]) => void;
-	setSortedPeopleList: (sortedPeopleList: PeopleInterface[]) => void;
+	setFilteredPeopleList: (filteredPeopleList: PeopleInterface[]) => void;
 	setIsLoading: (isLoading: boolean) => void;
 	setIsDialogLoading: (isDialogLoading: boolean) => void;
-	setSortBy: (sortBy: string | null) => void;
+	setFilterBy: (filterBy: string[]) => void;
 }
 
 const storeCreator: StateCreator<PeopleStore> = (set) => ({
 	people: [],
-	sortedPeopleList: [],
+	filteredPeopleList: [],
 	isLoading: false,
 	isDialogLoading: false,
-	sortBy: "tpapproved",
+	filterBy: ["tpapproved"],
 
 	setPeople: (people: PeopleInterface[]) => set({ people }),
-	setSortedPeopleList: (sortedPeopleList: PeopleInterface[]) =>
-		set({ sortedPeopleList }),
+	setFilteredPeopleList: (filteredPeopleList: PeopleInterface[]) =>
+		set({ filteredPeopleList }),
 	setIsLoading: (isLoading: boolean) => set({ isLoading }),
 	setIsDialogLoading: (isDialogLoading: boolean) => set({ isDialogLoading }),
-	setSortBy: (sortBy: string | null) => set({ sortBy }),
+	setFilterBy: (filterBy: string[]) => set({ filterBy }),
 });
 
 const createStoreWithMiddleware = isDevelopment

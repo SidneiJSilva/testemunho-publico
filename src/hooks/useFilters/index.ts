@@ -17,20 +17,38 @@ const filterStrategies: Record<string, (person: Person) => boolean> = {
 };
 
 export const useFilters = () => {
-	const { sortBy, setSortBy, setSortedPeopleList, people } = peopleStore();
+	const { filterBy, setFilterBy, setFilteredPeopleList, people } =
+		peopleStore();
 
 	useEffect(() => {
-		applyFilter(sortBy);
+		applyFilter(filterBy, "");
 	}, [people]);
 
-	const applyFilter = (sortKey: string | null) => {
-		setSortBy(sortKey);
+	const applyFilter = (filterKeys: string[], filterString: string) => {
+		setFilterBy(filterKeys);
 
-		const filterFn = sortKey ? filterStrategies[sortKey] : null;
+		if (!filterKeys || filterKeys.length === 0) {
+			setFilteredPeopleList([...people]);
+			return;
+		}
 
-		const filteredPeople = filterFn ? people.filter(filterFn) : [...people];
+		const filteredPeople = people.filter((person) => {
+			const passesToggleFilters =
+				filterKeys.length === 0
+					? true
+					: filterKeys.every((key) => {
+							const filterFn = filterStrategies[key];
+							return filterFn ? filterFn(person) : true;
+					  });
 
-		setSortedPeopleList(filteredPeople);
+			const passesStringFilter = !filterString
+				? true
+				: person.fullname?.toLowerCase().includes(filterString.toLowerCase());
+
+			return passesToggleFilters && passesStringFilter;
+		});
+
+		setFilteredPeopleList(filteredPeople);
 	};
 
 	return { applyFilter };

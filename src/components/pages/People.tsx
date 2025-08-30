@@ -6,7 +6,7 @@ import { peopleStore } from "@/stores";
 
 const People = () => {
 	const { fetchPeople } = usePeople();
-	const { people, sortedPeopleList } = peopleStore();
+	const { people, filteredPeopleList } = peopleStore();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -18,7 +18,7 @@ const People = () => {
 		}
 	}, []);
 
-	return <PeopleList people={sortedPeopleList} />;
+	return <PeopleList people={filteredPeopleList} />;
 };
 
 export default People;
