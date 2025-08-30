@@ -167,9 +167,8 @@ export default function ColorToggleButton() {
 								size="small"
 								onChange={handleFilterChange}
 								sx={{
-									display: { xs: "flex", md: "flex" }, // sempre visível
+									display: { xs: "flex", md: "flex" },
 									flexWrap: "wrap",
-									gap: 1,
 								}}
 							>
 								{filters.map((filter) => (
