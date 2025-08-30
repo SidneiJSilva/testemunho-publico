@@ -9,8 +9,6 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 
 import { useState } from "react";
 import { navigationData } from "@/constants/navigation";
-import { isMobileScreen } from "@/utils/screenSize";
-import type { NavigationItem } from "@/interfaces";
 import { useConditionalNavigate, useFilters } from "@/hooks";
 import { useLocation } from "react-router-dom";
 import {
@@ -43,10 +41,6 @@ export default function ColorToggleButton() {
 		setPage(newValue);
 		navigateTo(newValue);
 	};
-
-	const buttonsToRender: NavigationItem[] = isMobileScreen()
-		? navigationData.filter((item: NavigationItem) => item.value !== "group")
-		: navigationData;
 
 	const filters = [
 		{ value: "tpapproved", item: <HailIcon /> },
@@ -111,7 +105,7 @@ export default function ColorToggleButton() {
 					exclusive
 					onChange={handleChange}
 				>
-					{buttonsToRender.map((item) => (
+					{navigationData.map((item) => (
 						<ToggleButton
 							key={item.value}
 							value={item.value}
