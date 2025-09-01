@@ -17,6 +17,7 @@ interface PeopleStore {
 	setIsLoading: (isLoading: boolean) => void;
 	setIsDialogLoading: (isDialogLoading: boolean) => void;
 	setFilterBy: (filterBy: string[]) => void;
+	updatePersonInList: (peson: PeopleInterface) => void;
 }
 
 const storeCreator: StateCreator<PeopleStore> = (set) => ({
@@ -32,6 +33,22 @@ const storeCreator: StateCreator<PeopleStore> = (set) => ({
 	setIsLoading: (isLoading: boolean) => set({ isLoading }),
 	setIsDialogLoading: (isDialogLoading: boolean) => set({ isDialogLoading }),
 	setFilterBy: (filterBy: string[]) => set({ filterBy }),
+	updatePersonInList: (updatedPerson: PeopleInterface) => {
+		set((state) => {
+			const updatedPeople = state.people.map((person) =>
+				person.peopleid === updatedPerson.peopleid ? updatedPerson : person
+			);
+
+			const updatedFilteredPeopleList = state.filteredPeopleList.map((person) =>
+				person.peopleid === updatedPerson.peopleid ? updatedPerson : person
+			);
+
+			return {
+				people: updatedPeople,
+				filteredPeopleList: updatedFilteredPeopleList,
+			};
+		});
+	},
 });
 
 const createStoreWithMiddleware = isDevelopment
