@@ -98,6 +98,8 @@ export class PeopleService {
 				regular_pionner: person.regularpionner,
 				tech_skills: person.techskills,
 				tp_approved: person.tpapproved,
+				"first-name": person.firstname,
+				"last-name": person.lastname,
 			})
 			.eq("id", person.peopleid);
 
