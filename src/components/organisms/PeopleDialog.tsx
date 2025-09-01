@@ -1,5 +1,4 @@
 // src/components/organisms/PeopleDialog.tsx
-
 import { PeopleDialogHeader } from "@/components/molecules/PeopleDialogHeader";
 import { PeopleDialogContent } from "@/components/molecules/PeopleDialogContent";
 import {
@@ -59,13 +58,14 @@ export default function PeopleDialog({
 					<CircularProgress size={70} />
 				</Box>
 			)}
-			{/* O Header também deve mostrar os dados editados */}
-			<PeopleDialogHeader person={editedPerson} />
+			<PeopleDialogHeader
+				person={editedPerson}
+				onPersonChange={setEditedPerson}
+			/>
 
 			<DialogContent
 				sx={{ backgroundColor: (theme) => theme.palette.background.default }}
 			>
-				{/* 5. PASSAMOS O ESTADO E A FUNÇÃO DE ATUALIZAÇÃO PARA O FILHO */}
 				<PeopleDialogContent
 					person={editedPerson}
 					onPersonChange={setEditedPerson}
@@ -82,8 +82,12 @@ export default function PeopleDialog({
 						gap: 2,
 					}}
 				>
-					<Button onClick={closeDialog}>Fechar</Button>
+					<Button size="small" onClick={closeDialog}>
+						Fechar
+					</Button>
+
 					<Button
+						size="small"
 						variant="contained"
 						color="success"
 						endIcon={<SaveIcon />}
