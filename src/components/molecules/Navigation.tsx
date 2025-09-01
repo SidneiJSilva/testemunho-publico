@@ -5,6 +5,7 @@ import ComputerIcon from "@mui/icons-material/Computer";
 import ManIcon from "@mui/icons-material/Man";
 import WomanIcon from "@mui/icons-material/Woman";
 import CloseIcon from "@mui/icons-material/Close";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 
 import { useState } from "react";
@@ -48,6 +49,7 @@ export default function ColorToggleButton() {
 		{ value: "regularpionner", item: <BusinessCenterIcon /> },
 		{ value: "male", item: <ManIcon /> },
 		{ value: "female", item: <WomanIcon /> },
+		{ value: "inactive", item: <PersonOffIcon /> },
 	];
 
 	const handleFilterChange = (
@@ -58,7 +60,9 @@ export default function ColorToggleButton() {
 
 		let finalFilters = [...newFilters];
 
-		if (clickedValue === "male" && newFilters.includes("male")) {
+		if (newFilters.includes("inactive")) {
+			finalFilters = ["inactive"];
+		} else if (clickedValue === "male" && newFilters.includes("male")) {
 			finalFilters = finalFilters.filter((filter) => filter !== "female");
 		} else if (clickedValue === "female" && newFilters.includes("female")) {
 			finalFilters = finalFilters.filter((filter) => filter !== "male");
@@ -167,9 +171,8 @@ export default function ColorToggleButton() {
 								size="small"
 								onChange={handleFilterChange}
 								sx={{
-									display: { xs: "flex", md: "flex" }, // sempre visível
+									display: { xs: "flex", md: "flex" },
 									flexWrap: "wrap",
-									gap: 1,
 								}}
 							>
 								{filters.map((filter) => (
@@ -208,6 +211,7 @@ export default function ColorToggleButton() {
 					size="small"
 				>
 					<InputLabel>Pesquisa</InputLabel>
+
 					<OutlinedInput
 						value={filterString}
 						onChange={(e) => handleFilterString(e.target.value)}
