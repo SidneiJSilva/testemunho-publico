@@ -1,3 +1,5 @@
+// src/components/molecules/PeopleDialogContent.tsx
+
 import PeopleDialogAbsences from "./PeopleDialogAbsences";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import GenderSwitch from "@/components/atoms/inputs/GenderSwitch";
@@ -5,72 +7,44 @@ import CheckSwitch from "@/components/atoms/inputs/CheckSwitch";
 import Checkbox from "@mui/material/Checkbox";
 import { Box, Stack, Typography } from "@mui/material";
 
-import { useState } from "react";
-import { type PeopleInterface } from "@/interfaces";
+import { type PeopleInterface, type PeopleAvailability } from "@/interfaces";
 import { colors } from "@/constants/colors";
 import "dayjs/locale/pt-br";
 import PeopleDialogFamily from "./PeopleDialogFamily";
 
-export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
-	const { availability } = person;
+export function PeopleDialogContent({
+	person,
+	onPersonChange,
+}: {
+	person: PeopleInterface;
+	onPersonChange: (updatedPerson: PeopleInterface) => void;
+}) {
+	const handleSwitchChange = (
+		field: keyof PeopleInterface,
+		isChecked: boolean
+	) => {
+		onPersonChange({ ...person, [field]: isChecked });
+	};
 
-	// Constants
-	const [isFemale, setIsFemale] = useState(person.gender === "female");
-	const [isTPApproved, setIsTPApproved] = useState(person.tpapproved);
-	const [isTechSkilled, setIsTechSkilled] = useState(person.techskills);
-	const [isPionner, setIsPionner] = useState(person.regularpionner);
-	const [isActive, setIsActive] = useState(person.active);
-	const [mondayMorning, setMondayMorning] = useState(
-		availability.mondaymorning
-	);
-	const [mondayAfternoon, setMondayAfernoon] = useState(
-		availability.mondayafternoon
-	);
-	const [tuesdayMorning, setTuesdayMorning] = useState(
-		availability.tuesdaymorning
-	);
-	const [tuesdayAfternoon, setTuesdayAfternoon] = useState(
-		availability.tuesdayafternoon
-	);
-	const [wednesdayMorning, setWednesdayMorning] = useState(
-		availability.wednesdaymorning
-	);
-	const [wednesdayAfternoon, setWednesdayAfternoon] = useState(
-		availability.wednesdayafternoon
-	);
-	const [thursdayMorning, setThursdayMorning] = useState(
-		availability.thursdaymorning
-	);
-	const [thursdayAfternoon, setThursdayAfternoon] = useState(
-		availability.thursdayafternoon
-	);
-	const [fridayMorning, setFridayMorning] = useState(
-		availability.fridaymorning
-	);
-	const [fridayAfternoon, setFridayAfternoon] = useState(
-		availability.fridayafternoon
-	);
-	const [saturdayMorning, setSaturdayMorning] = useState(
-		availability.saturdaymorning
-	);
-	const [saturdayAfternoon, setSaturdayAfternoon] = useState(
-		availability.saturdayafternoon
-	);
-	const [sundayMorning, setSundayMorning] = useState(
-		availability.sundaymorning
-	);
-	const [sundayAfternoon, setSundayAfternoon] = useState(
-		availability.sundayafternoon
-	);
+	const handleGenderChange = (isChecked: boolean) => {
+		onPersonChange({ ...person, gender: isChecked ? "female" : "male" });
+	};
+
+	const handleAvailabilityChange = (
+		field: keyof PeopleAvailability,
+		isChecked: boolean
+	) => {
+		onPersonChange({
+			...person,
+			availability: {
+				...person.availability,
+				[field]: isChecked,
+			},
+		});
+	};
 
 	return (
-		<Box
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				gap: 4,
-			}}
-		>
+		<Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
 			<Box
 				sx={{
 					display: "grid",
@@ -81,52 +55,54 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 				<FormControlLabel
 					control={
 						<GenderSwitch
-							checked={isFemale}
-							onChange={(e) => setIsFemale(e.target.checked)}
+							checked={person.gender === "female"}
+							onChange={(e) => handleGenderChange(e.target.checked)}
 						/>
 					}
 					label="Gênero"
 					sx={{ color: colors.text }}
 				/>
-
 				<FormControlLabel
 					control={
 						<CheckSwitch
-							checked={isTPApproved}
-							onChange={(e) => setIsTPApproved(e.target.checked)}
+							checked={person.tpapproved}
+							onChange={(e) =>
+								handleSwitchChange("tpapproved", e.target.checked)
+							}
 						/>
 					}
 					label="TP Aprovado"
 					sx={{ color: colors.text }}
 				/>
-
 				<FormControlLabel
 					control={
 						<CheckSwitch
-							checked={isTechSkilled}
-							onChange={(e) => setIsTechSkilled(e.target.checked)}
+							checked={person.techskills}
+							onChange={(e) =>
+								handleSwitchChange("techskills", e.target.checked)
+							}
 						/>
 					}
 					label="Tecnologia"
 					sx={{ color: colors.text }}
 				/>
-
 				<FormControlLabel
 					control={
 						<CheckSwitch
-							checked={isPionner}
-							onChange={(e) => setIsPionner(e.target.checked)}
+							checked={person.regularpionner}
+							onChange={(e) =>
+								handleSwitchChange("regularpionner", e.target.checked)
+							}
 						/>
 					}
 					label="Pioneiro"
 					sx={{ color: colors.text }}
 				/>
-
 				<FormControlLabel
 					control={
 						<CheckSwitch
-							checked={isActive}
-							onChange={(e) => setIsActive(e.target.checked)}
+							checked={person.active}
+							onChange={(e) => handleSwitchChange("active", e.target.checked)}
 						/>
 					}
 					label="Ativo"
@@ -134,7 +110,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 				/>
 			</Box>
 
-			{isTPApproved && (
+			{person.tpapproved && (
 				<Stack spacing={2}>
 					<Typography variant="h6" color={colors.textSubtitles}>
 						Disponibilidade
@@ -166,17 +142,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Segunda
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={mondayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setMondayMorning(e.target.checked)}
+										checked={person.availability.mondaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"mondaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -187,17 +163,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={mondayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setMondayAfernoon(e.target.checked)}
+										checked={person.availability.mondayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"mondayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -222,17 +198,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Terça
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={tuesdayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setTuesdayMorning(e.target.checked)}
+										checked={person.availability.tuesdaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"tuesdaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -243,17 +219,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={tuesdayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setTuesdayAfternoon(e.target.checked)}
+										checked={person.availability.tuesdayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"tuesdayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -278,17 +254,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Quarta
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={wednesdayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setWednesdayMorning(e.target.checked)}
+										checked={person.availability.wednesdaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"wednesdaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -299,17 +275,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={wednesdayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setWednesdayAfternoon(e.target.checked)}
+										checked={person.availability.wednesdayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"wednesdayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -322,7 +298,7 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							/>
 						</Box>
 
-						{/* QUINTA */}
+						{/* THURSDAY */}
 						<Box
 							sx={{
 								display: "grid",
@@ -334,17 +310,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Quinta
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={thursdayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setThursdayMorning(e.target.checked)}
+										checked={person.availability.thursdaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"thursdaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -355,17 +331,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={thursdayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setThursdayAfternoon(e.target.checked)}
+										checked={person.availability.thursdayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"thursdayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -390,17 +366,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Sexta
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={fridayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setFridayMorning(e.target.checked)}
+										checked={person.availability.fridaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"fridaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -411,17 +387,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={fridayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setFridayAfternoon(e.target.checked)}
+										checked={person.availability.fridayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"fridayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -446,17 +422,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Sábado
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={saturdayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setSaturdayMorning(e.target.checked)}
+										checked={person.availability.saturdaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"saturdaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -467,17 +443,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={saturdayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setSaturdayAfternoon(e.target.checked)}
+										checked={person.availability.saturdayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"saturdayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"
@@ -502,17 +478,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 							<Typography variant="body1" fontWeight={700} color={colors.text}>
 								Domingo
 							</Typography>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={sundayMorning}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setSundayMorning(e.target.checked)}
+										checked={person.availability.sundaymorning}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"sundaymorning",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Manhã"
@@ -523,17 +499,17 @@ export function PeopleDialogContent({ person }: { person: PeopleInterface }) {
 									},
 								}}
 							/>
-
 							<FormControlLabel
 								control={
 									<Checkbox
-										checked={sundayAfternoon}
-										sx={{
-											"&.Mui-checked": {
-												color: colors.primary,
-											},
-										}}
-										onChange={(e) => setSundayAfternoon(e.target.checked)}
+										checked={person.availability.sundayafternoon}
+										sx={{ "&.Mui-checked": { color: colors.primary } }}
+										onChange={(e) =>
+											handleAvailabilityChange(
+												"sundayafternoon",
+												e.target.checked
+											)
+										}
 									/>
 								}
 								label="Tarde"

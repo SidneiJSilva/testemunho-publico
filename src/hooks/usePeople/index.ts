@@ -7,7 +7,8 @@ import type {
 import { peopleStore } from "@/stores";
 
 export const usePeople = () => {
-	const { setPeople, setIsLoading, setIsDialogLoading } = peopleStore();
+	const { setPeople, setIsLoading, setIsDialogLoading, updatePersonInList } =
+		peopleStore();
 
 	const fetchPeople = async (showLoading: boolean = true) => {
 		if (showLoading) setIsLoading(true);
@@ -89,11 +90,26 @@ export const usePeople = () => {
 		}
 	};
 
+	const savePersonData = async (person: PeopleInterface) => {
+		try {
+			setIsDialogLoading(true);
+
+			await PeopleService.savePersonData(person);
+
+			await updatePersonInList(person);
+		} catch (error) {
+			console.log("ERRO AO SALVAR DADOS ", error);
+		} finally {
+			setIsDialogLoading(false);
+		}
+	};
+
 	return {
 		fetchPeople,
 		addNewAbsence,
 		addNewFamilyMember,
 		removeFamilyMember,
 		removeAbsence,
+		savePersonData,
 	};
 };

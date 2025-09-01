@@ -1,4 +1,5 @@
-// src/components/organisms/TerritoryDialog.tsx
+// src/components/organisms/PeopleDialog.tsx
+
 import { PeopleDialogHeader } from "@/components/molecules/PeopleDialogHeader";
 import { PeopleDialogContent } from "@/components/molecules/PeopleDialogContent";
 import {
@@ -7,14 +8,13 @@ import {
 	DialogActions,
 	Button,
 	CircularProgress,
+	Box,
 } from "@mui/material";
-import { Box } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-
 import { type PeopleInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
-import { colors } from "@/constants/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePeople } from "@/hooks";
 
 export default function PeopleDialog({
 	openDialog,
@@ -26,21 +26,22 @@ export default function PeopleDialog({
 	closeDialog: () => void;
 }) {
 	const { isDialogLoading } = peopleStore();
-	const [isSaveLoading, setIsSaveLoading] = useState(false);
+	const { savePersonData } = usePeople();
+	const [editedPerson, setEditedPerson] = useState<PeopleInterface>(peopleData);
+
+	useEffect(() => {
+		setEditedPerson(peopleData);
+	}, [peopleData]);
 
 	const saveAndClose = async () => {
-		console.log("saving ...");
-		setIsSaveLoading(true);
+		await savePersonData(editedPerson);
 
-		setTimeout(() => {
-			setIsSaveLoading(false);
-			closeDialog();
-		}, 1000);
+		closeDialog();
 	};
 
 	return (
 		<Dialog open={openDialog} onClose={closeDialog} maxWidth="sm" fullWidth>
-			{(isDialogLoading || isSaveLoading) && (
+			{isDialogLoading && (
 				<Box
 					sx={{
 						position: "absolute",
@@ -58,10 +59,17 @@ export default function PeopleDialog({
 					<CircularProgress size={70} />
 				</Box>
 			)}
-			<PeopleDialogHeader person={peopleData} />
+			{/* O Header também deve mostrar os dados editados */}
+			<PeopleDialogHeader person={editedPerson} />
 
-			<DialogContent sx={{ backgroundColor: colors.background }}>
-				<PeopleDialogContent person={peopleData} />
+			<DialogContent
+				sx={{ backgroundColor: (theme) => theme.palette.background.default }}
+			>
+				{/* 5. PASSAMOS O ESTADO E A FUNÇÃO DE ATUALIZAÇÃO PARA O FILHO */}
+				<PeopleDialogContent
+					person={editedPerson}
+					onPersonChange={setEditedPerson}
+				/>
 			</DialogContent>
 
 			<DialogActions>
@@ -75,7 +83,6 @@ export default function PeopleDialog({
 					}}
 				>
 					<Button onClick={closeDialog}>Fechar</Button>
-
 					<Button
 						variant="contained"
 						color="success"
