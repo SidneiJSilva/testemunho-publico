@@ -12,7 +12,7 @@ import {
 import SaveIcon from "@mui/icons-material/Save";
 import { type PeopleInterface } from "@/interfaces";
 import { peopleStore } from "@/stores";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { usePeople } from "@/hooks";
 
 export default function PeopleDialog({
@@ -27,6 +27,10 @@ export default function PeopleDialog({
 	const { isDialogLoading } = peopleStore();
 	const { savePersonData } = usePeople();
 	const [editedPerson, setEditedPerson] = useState<PeopleInterface>(peopleData);
+
+	const isEdited = useMemo(() => {
+		return JSON.stringify(editedPerson) !== JSON.stringify(peopleData);
+	}, [editedPerson, peopleData]);
 
 	useEffect(() => {
 		setEditedPerson(peopleData);
@@ -86,15 +90,17 @@ export default function PeopleDialog({
 						Fechar
 					</Button>
 
-					<Button
-						size="small"
-						variant="contained"
-						color="success"
-						endIcon={<SaveIcon />}
-						onClick={saveAndClose}
-					>
-						Salvar
-					</Button>
+					{isEdited && (
+						<Button
+							size="small"
+							variant="contained"
+							color="success"
+							endIcon={<SaveIcon />}
+							onClick={saveAndClose}
+						>
+							Salvar
+						</Button>
+					)}
 				</Box>
 			</DialogActions>
 		</Dialog>
