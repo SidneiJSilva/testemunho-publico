@@ -1,10 +1,7 @@
+import ScheduleList from "../organisms/ScheduleList";
+
 const Dashboard = () => {
-	return (
-		<div>
-			<div>Dashboard</div>
-			<p>Welcome to the Dashboard!</p>
-		</div>
-	);
+	return <ScheduleList />;
 };
 
 export default Dashboard;

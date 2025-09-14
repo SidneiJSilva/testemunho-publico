@@ -1,10 +1,7 @@
+import ScheduleList from "../organisms/ScheduleList";
+
 const Schedule = () => {
-	return (
-		<div>
-			<div>Schedule</div>
-			<p>Welcome to the Schedule!</p>
-		</div>
-	);
+	return <ScheduleList />;
 };
 
 export default Schedule;
