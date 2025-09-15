@@ -8,26 +8,90 @@ import Paper from "@mui/material/Paper";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 import { peopleStore } from "@/stores";
-import { type Dayjs } from "dayjs";
+import { useMemo } from "react";
 
-function createData(name: string, p1: number, p2: number) {
-	return { name, p1, p2 };
+interface Publisher {
+	id: number;
+	label: string;
 }
 
-const rows = [createData("Furadouro CENTRO - 18:00-19:30", 1, 2)];
+interface Assignment {
+	locationId: number;
+	publishers: Publisher[];
+}
 
-const cols = [
-	{ id: "name", label: "Local / Hora" },
-	{ id: "calories", label: "18/ago" },
-	{ id: "fat", label: "25/ago" },
-];
+interface WeekdayDataItem {
+	date: string; // "2025-09-15"
+	assignments: Assignment[];
+}
 
-export default function ScheduleWeekDay({ day }: { day: any }) {
+interface Slot {
+	placeId: number;
+	placeName: string;
+	time: string;
+}
+
+interface DaySchema {
+	weekday: string;
+	slots: Slot[];
+}
+
+interface NormalizedRow {
+	placeId: number;
+	placeName: string;
+	time: string;
+	dates: Record<string, Publisher[]>; // { "2025-09-15": [ {id, label}, ... ] }
+}
+
+// Função para normalizar os dados
+function normalizeSchedule(
+	day: DaySchema,
+	weekdayData: WeekdayDataItem[]
+): NormalizedRow[] {
+	const locationsMap: Record<number, NormalizedRow> = {};
+
+	weekdayData.forEach((dateItem) => {
+		dateItem.assignments.forEach((assignment) => {
+			if (!locationsMap[assignment.locationId]) {
+				const slotInfo = day.slots.find(
+					(s) => s.placeId === assignment.locationId
+				);
+				locationsMap[assignment.locationId] = {
+					placeId: assignment.locationId,
+					placeName: slotInfo?.placeName || "",
+					time: slotInfo?.time || "",
+					dates: {},
+				};
+			}
+			locationsMap[assignment.locationId].dates[dateItem.date] =
+				assignment.publishers;
+		});
+	});
+
+	return Object.values(locationsMap);
+}
+
+export default function ScheduleWeekDay({
+	day,
+	weekdayData,
+}: {
+	day: DaySchema;
+	weekdayData: WeekdayDataItem[];
+}) {
 	const { people } = peopleStore();
+
+	const tableData = useMemo(
+		() => normalizeSchedule(day, weekdayData),
+		[day, weekdayData]
+	);
+
+	const columns = useMemo(() => {
+		return ["Local / Hora", ...(weekdayData?.map((item) => item.date) || [])];
+	}, [weekdayData]);
 
 	return (
 		<>
-			{people.length && (
+			{people.length && weekdayData?.length && (
 				<div>
 					<Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
 						<strong style={{ textTransform: "capitalize" }}>
@@ -39,65 +103,59 @@ export default function ScheduleWeekDay({ day }: { day: any }) {
 						<Table
 							sx={{ minWidth: 650 }}
 							size="small"
-							aria-label="a dense table"
+							aria-label="schedule table"
 						>
 							<TableHead>
 								<TableRow>
-									{cols.map((col) => (
-										<TableCell key={col.id}>{col.label}</TableCell>
+									{columns.map((col, index) => (
+										<TableCell key={index}>{col}</TableCell>
 									))}
 								</TableRow>
 							</TableHead>
 
 							<TableBody>
-								{rows.map((row) => (
-									<TableRow
-										key={row.name}
-										sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-									>
+								{tableData.map((row) => (
+									<TableRow key={row.placeId}>
 										<TableCell component="th" scope="row">
-											{row.name}
+											{row.placeName} - {row.time}
 										</TableCell>
 
-										<TableCell align="center">
-											<FormControl size="small" sx={{ minWidth: 120 }}>
-												<InputLabel id="select-family-member">
-													Publicador
-												</InputLabel>
-
-												<Select
-													labelId="select-family-member"
-													id="family-member-select"
-													value={row.p1}
-													label="Publicador"
-													// onChange={handleChange}
+										{columns.slice(1).map((date) => (
+											<TableCell key={date} align="center">
+												<Box
+													sx={{
+														display: "flex",
+														flexDirection: "column",
+														alignItems: "center",
+													}}
 												>
-													{people.map((p) => (
-														<MenuItem value={p.peopleid}>{p.fullname}</MenuItem>
+													{(row.dates[date] || []).map((pub, idx) => (
+														<FormControl
+															key={idx}
+															size="small"
+															sx={{ minWidth: 120, mb: 1 }}
+														>
+															<InputLabel
+																id={`select-pub-${row.placeId}-${date}-${idx}`}
+															>
+																Publicador
+															</InputLabel>
+															<Select
+																labelId={`select-pub-${row.placeId}-${date}-${idx}`}
+																value={pub.id}
+																label="Publicador"
+															>
+																{people.map((p) => (
+																	<MenuItem key={p.peopleid} value={p.peopleid}>
+																		{p.fullname}
+																	</MenuItem>
+																))}
+															</Select>
+														</FormControl>
 													))}
-												</Select>
-											</FormControl>
-										</TableCell>
-
-										<TableCell align="center">
-											<FormControl size="small" sx={{ minWidth: 120 }}>
-												<InputLabel id="select-family-member">
-													Publicador
-												</InputLabel>
-
-												<Select
-													labelId="select-family-member"
-													id="family-member-select"
-													value={row.p2}
-													label="Publicador"
-													// onChange={handleChange}
-												>
-													{people.map((p) => (
-														<MenuItem value={p.peopleid}>{p.fullname}</MenuItem>
-													))}
-												</Select>
-											</FormControl>
-										</TableCell>
+												</Box>
+											</TableCell>
+										))}
 									</TableRow>
 								))}
 							</TableBody>

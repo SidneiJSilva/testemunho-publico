@@ -1,34 +1,37 @@
+// stores/scheduleStore.ts
 import { create } from "zustand";
-import { devtools, type DevtoolsOptions } from "zustand/middleware";
-import { type StateCreator } from "zustand";
+import { devtools } from "zustand/middleware";
+import dayjs, { Dayjs } from "dayjs";
+import { generateMockSchedule } from "@/utils/scheduleMock";
 
-const isDevelopment = import.meta.env.DEV;
-
-interface ScheduleState {
-	schedule: any; // TO DO - applyze and type properly
+interface ScheduleStore {
+	startDate: Dayjs;
+	endDate: Dayjs;
+	schedule: any; // aqui você pode tipar melhor depois
 	isLoading: boolean;
 
-	setSchedule: (schedule: any) => void;
-	setIsLoading: (isLoading: boolean) => void;
+	setDates: (start: Dayjs, end: Dayjs) => void;
+	generateSchedule: () => void;
 }
 
-const storeCreator: StateCreator<ScheduleState> = (set) => ({
-	schedule: null,
-	isLoading: false,
+export const scheduleStore = create<ScheduleStore>()(
+	devtools((set, get) => ({
+		startDate: dayjs().startOf("week").add(1, "day"),
+		endDate: dayjs().startOf("week").add(1, "day").add(4, "week"),
+		schedule: {},
+		isLoading: false,
 
-	setSchedule: (schedule: any) => set({ schedule }),
-	setIsLoading: (isLoading: boolean) => set({ isLoading }),
-});
+		setDates: (start, end) => {
+			set({ startDate: start, endDate: end });
+			// recalcula sempre que altera
+			const schedule = generateMockSchedule(start, end);
+			set({ schedule });
+		},
 
-const createStoreWithMiddleware = isDevelopment
-	? create<ScheduleState>()(
-			devtools(
-				storeCreator as any,
-				{
-					name: "TP Schedule Store",
-				} as DevtoolsOptions
-			)
-	  )
-	: create<ScheduleState>()(storeCreator);
-
-export const scheduleStore = createStoreWithMiddleware;
+		generateSchedule: () => {
+			const { startDate, endDate } = get();
+			const schedule = generateMockSchedule(startDate, endDate);
+			set({ schedule });
+		},
+	}))
+);

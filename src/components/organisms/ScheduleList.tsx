@@ -6,17 +6,21 @@ import { colors } from "@/constants/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { type Dayjs } from "dayjs";
-import { useState } from "react";
-import { peopleStore, schemaStore } from "@/stores";
+import dayjs from "dayjs";
+import { peopleStore, schemaStore, scheduleStore } from "@/stores";
+import { useEffect } from "react";
 
 export default function ScheduleList() {
-	const [newStartDate, setNewStartDate] = useState<Dayjs | null>(dayjs());
-	const [newEndDate, setNewEndDate] = useState<Dayjs | null>(dayjs());
 	const { isLoading } = peopleStore();
 	const { schema, isLoading: schemaLoading } = schemaStore();
+	const { startDate, endDate, setDates, schedule } = scheduleStore();
 
-	console.log("ScheduleList - schema:", schema);
+	useEffect(() => {
+		const startDate = dayjs().startOf("week").add(1, "day");
+		const endDate = dayjs().startOf("week").add(4, "week");
+
+		setDates(startDate, endDate);
+	}, []);
 
 	return (
 		<>
@@ -53,10 +57,10 @@ export default function ScheduleList() {
 								slotProps={{
 									textField: { size: "small" },
 								}}
-								value={newStartDate}
+								value={startDate}
 								onChange={(newValue) => {
-									setNewStartDate(newValue);
-									setNewEndDate(newValue);
+									if (!newValue) return;
+									setDates(newValue, endDate);
 								}}
 							/>
 						</LocalizationProvider>
@@ -68,19 +72,26 @@ export default function ScheduleList() {
 							<DatePicker
 								label="Data final"
 								format="DD/MM/YYYY"
-								minDate={newStartDate || dayjs()}
+								minDate={startDate || dayjs()}
 								slotProps={{
 									textField: { size: "small" },
 								}}
-								value={newEndDate}
-								onChange={(newValue) => setNewEndDate(newValue)}
+								value={endDate}
+								onChange={(newValue) => {
+									if (!newValue) return;
+									setDates(startDate, newValue);
+								}}
 							/>
 						</LocalizationProvider>
 					</Box>
 
 					{schema?.days &&
-						schema.days.map((day) => (
-							<ScheduleWeekDay key={day.weekday} day={day} />
+						schema.days.map((day: any) => (
+							<ScheduleWeekDay
+								key={day.weekday}
+								day={day}
+								weekdayData={schedule[day.weekday.toLowerCase()]}
+							/>
 						))}
 				</Box>
 			)}
