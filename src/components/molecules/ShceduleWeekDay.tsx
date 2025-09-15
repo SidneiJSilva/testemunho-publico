@@ -5,7 +5,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+	Box,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	Typography,
+} from "@mui/material";
 
 import { peopleStore } from "@/stores";
 import { useMemo } from "react";
@@ -93,13 +100,107 @@ export default function ScheduleWeekDay({
 		<>
 			{people.length && weekdayData?.length && (
 				<div>
-					<Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-						<strong style={{ textTransform: "capitalize" }}>
-							{day.weekday}
-						</strong>
+					<Box sx={{ display: "flex", justifyContent: "center", mb: 2, mt: 4 }}>
+						<Typography variant="subtitle1" fontWeight={700}>
+							{day.weekday.toUpperCase()}
+						</Typography>
 					</Box>
 
 					<TableContainer component={Paper}>
+						<Table
+							sx={{ minWidth: 650, tableLayout: "fixed", width: "100%" }}
+							size="small"
+							aria-label="schedule table"
+						>
+							<TableHead>
+								<TableRow>
+									{columns.map((col, index) => (
+										<TableCell
+											key={index}
+											sx={{
+												fontWeight: "bold",
+												textAlign: index === 0 ? "left" : "center",
+												width:
+													index === 0
+														? "250px"
+														: `${100 / (columns.length - 1)}%`,
+											}}
+										>
+											{col}
+										</TableCell>
+									))}
+								</TableRow>
+							</TableHead>
+
+							<TableBody>
+								{tableData.map((row) => (
+									<TableRow key={row.placeId}>
+										<TableCell
+											component="th"
+											scope="row"
+											sx={{ fontWeight: 500, width: "250px" }}
+										>
+											<Box>
+												<Typography variant="body2" fontWeight={700}>
+													{row.placeName}
+												</Typography>
+
+												<Typography variant="body1">{row.time}</Typography>
+											</Box>
+										</TableCell>
+
+										{columns.slice(1).map((date) => (
+											<TableCell
+												key={date}
+												align="center"
+												sx={{
+													width: `${100 / (columns.length - 1)}%`,
+													verticalAlign: "top",
+												}}
+											>
+												<Box
+													sx={{
+														display: "flex",
+														flexDirection: "column",
+														alignItems: "center",
+														gap: 1,
+													}}
+												>
+													{(row.dates[date] || []).map((pub, idx) => (
+														<FormControl
+															key={idx}
+															size="small"
+															sx={{ minWidth: "100%", maxWidth: 120 }}
+														>
+															<InputLabel
+																id={`select-pub-${row.placeId}-${date}-${idx}`}
+															>
+																Publicador
+															</InputLabel>
+															<Select
+																labelId={`select-pub-${row.placeId}-${date}-${idx}`}
+																value={pub.id}
+																label="Publicador"
+																fullWidth
+															>
+																{people.map((p) => (
+																	<MenuItem key={p.peopleid} value={p.peopleid}>
+																		{p.fullname}
+																	</MenuItem>
+																))}
+															</Select>
+														</FormControl>
+													))}
+												</Box>
+											</TableCell>
+										))}
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+
+					{/* <TableContainer component={Paper}>
 						<Table
 							sx={{ minWidth: 650 }}
 							size="small"
@@ -160,7 +261,7 @@ export default function ScheduleWeekDay({
 								))}
 							</TableBody>
 						</Table>
-					</TableContainer>
+					</TableContainer> */}
 				</div>
 			)}
 		</>
