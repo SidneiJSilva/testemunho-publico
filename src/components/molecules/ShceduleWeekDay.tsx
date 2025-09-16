@@ -7,17 +7,21 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {
 	Box,
+	Button,
 	FormControl,
+	IconButton,
 	InputLabel,
 	MenuItem,
 	Select,
 	Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { peopleStore } from "@/stores";
 import { useMemo } from "react";
 import { pt } from "@/i18n/pt";
 import dayjs from "dayjs";
+import { colors } from "@/constants/colors";
 
 interface Publisher {
 	id: number;
@@ -97,11 +101,15 @@ export default function ScheduleWeekDay({
 		return ["Local / Hora", ...(weekdayData?.map((item) => item.date) || [])];
 	}, [weekdayData]);
 
+	const addNewPlace = () => {
+		console.log("Add new place clicked", day);
+	};
+
 	return (
 		<>
 			{people.length && weekdayData?.length && (
-				<div>
-					<Box sx={{ display: "flex", justifyContent: "center", mb: 2, mt: 4 }}>
+				<Box sx={{ gap: 2, display: "flex", flexDirection: "column" }}>
+					<Box sx={{ display: "flex", justifyContent: "center" }}>
 						<Typography variant="subtitle1" fontWeight={700}>
 							{pt[day.weekday.toLowerCase() as keyof typeof pt]}
 						</Typography>
@@ -141,12 +149,26 @@ export default function ScheduleWeekDay({
 											scope="row"
 											sx={{ fontWeight: 500, width: "250px" }}
 										>
-											<Box>
-												<Typography variant="body2" fontWeight={700}>
-													{row.placeName}
-												</Typography>
+											<Box
+												sx={{
+													display: "flex",
+													gap: 0.5,
+													justifyContent: "space-between",
+												}}
+											>
+												<div>
+													<Typography variant="body2" fontWeight={700}>
+														{row.placeName}
+													</Typography>
 
-												<Typography variant="body1">{row.time}</Typography>
+													<Typography variant="body1">{row.time}</Typography>
+												</div>
+
+												<IconButton>
+													<DeleteIcon
+														sx={{ fontSize: "1.2rem", color: colors.error }}
+													/>
+												</IconButton>
 											</Box>
 										</TableCell>
 
@@ -200,7 +222,17 @@ export default function ScheduleWeekDay({
 							</TableBody>
 						</Table>
 					</TableContainer>
-				</div>
+
+					<Box sx={{ display: "flex", gap: 2 }}>
+						<Button
+							variant="contained"
+							size="small"
+							onClick={() => addNewPlace()}
+						>
+							Adicionar
+						</Button>
+					</Box>
+				</Box>
 			)}
 		</>
 	);
