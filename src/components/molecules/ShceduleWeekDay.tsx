@@ -16,6 +16,8 @@ import {
 
 import { peopleStore } from "@/stores";
 import { useMemo } from "react";
+import { pt } from "@/i18n/pt";
+import dayjs from "dayjs";
 
 interface Publisher {
 	id: number;
@@ -47,10 +49,9 @@ interface NormalizedRow {
 	placeId: number;
 	placeName: string;
 	time: string;
-	dates: Record<string, Publisher[]>; // { "2025-09-15": [ {id, label}, ... ] }
+	dates: Record<string, Publisher[]>;
 }
 
-// Função para normalizar os dados
 function normalizeSchedule(
 	day: DaySchema,
 	weekdayData: WeekdayDataItem[]
@@ -102,7 +103,7 @@ export default function ScheduleWeekDay({
 				<div>
 					<Box sx={{ display: "flex", justifyContent: "center", mb: 2, mt: 4 }}>
 						<Typography variant="subtitle1" fontWeight={700}>
-							{day.weekday.toUpperCase()}
+							{pt[day.weekday.toLowerCase() as keyof typeof pt]}
 						</Typography>
 					</Box>
 
@@ -126,7 +127,7 @@ export default function ScheduleWeekDay({
 														: `${100 / (columns.length - 1)}%`,
 											}}
 										>
-											{col}
+											{index === 0 ? col : dayjs(col).format("DD/MM/YYYY")}
 										</TableCell>
 									))}
 								</TableRow>
@@ -199,69 +200,6 @@ export default function ScheduleWeekDay({
 							</TableBody>
 						</Table>
 					</TableContainer>
-
-					{/* <TableContainer component={Paper}>
-						<Table
-							sx={{ minWidth: 650 }}
-							size="small"
-							aria-label="schedule table"
-						>
-							<TableHead>
-								<TableRow>
-									{columns.map((col, index) => (
-										<TableCell key={index}>{col}</TableCell>
-									))}
-								</TableRow>
-							</TableHead>
-
-							<TableBody>
-								{tableData.map((row) => (
-									<TableRow key={row.placeId}>
-										<TableCell component="th" scope="row">
-											{row.placeName} - {row.time}
-										</TableCell>
-
-										{columns.slice(1).map((date) => (
-											<TableCell key={date} align="center">
-												<Box
-													sx={{
-														display: "flex",
-														flexDirection: "column",
-														alignItems: "center",
-													}}
-												>
-													{(row.dates[date] || []).map((pub, idx) => (
-														<FormControl
-															key={idx}
-															size="small"
-															sx={{ minWidth: 120, mb: 1 }}
-														>
-															<InputLabel
-																id={`select-pub-${row.placeId}-${date}-${idx}`}
-															>
-																Publicador
-															</InputLabel>
-															<Select
-																labelId={`select-pub-${row.placeId}-${date}-${idx}`}
-																value={pub.id}
-																label="Publicador"
-															>
-																{people.map((p) => (
-																	<MenuItem key={p.peopleid} value={p.peopleid}>
-																		{p.fullname}
-																	</MenuItem>
-																))}
-															</Select>
-														</FormControl>
-													))}
-												</Box>
-											</TableCell>
-										))}
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer> */}
 				</div>
 			)}
 		</>

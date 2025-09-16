@@ -53,7 +53,6 @@ export default function ScheduleList() {
 							<DatePicker
 								label="Data inicial"
 								format="DD/MM/YYYY"
-								minDate={dayjs()}
 								slotProps={{
 									textField: { size: "small" },
 								}}

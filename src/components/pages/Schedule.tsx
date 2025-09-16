@@ -16,7 +16,6 @@ const Schedule = () => {
 		const fetchData = async () => {
 			if (people.length === 0) await fetchPeople();
 			if (!schema) await fetchSchema();
-			console.log("SCHEDULE => ", schedule);
 			if (!schedule) await fetchSchedule();
 		};
 		fetchData();
