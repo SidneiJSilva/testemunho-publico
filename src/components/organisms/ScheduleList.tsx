@@ -85,10 +85,11 @@ export default function ScheduleList() {
 					</Box>
 
 					{schema?.days &&
-						schema.days.map((day: any) => (
+						schema.days.map((day: any, idx: number) => (
 							<ScheduleWeekDay
 								key={day.weekday}
 								day={day}
+								index={idx}
 								weekdayData={schedule[day.weekday.toLowerCase()]}
 							/>
 						))}

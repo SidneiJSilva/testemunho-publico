@@ -16,45 +16,16 @@ import {
 	Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CloseIcon from "@mui/icons-material/Close";
 
 import { peopleStore } from "@/stores";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { pt } from "@/i18n/pt";
 import dayjs from "dayjs";
 import { colors } from "@/constants/colors";
 
-interface Publisher {
-	id: number;
-	label: string;
-}
-
-interface Assignment {
-	locationId: number;
-	publishers: Publisher[];
-}
-
-interface WeekdayDataItem {
-	date: string; // "2025-09-15"
-	assignments: Assignment[];
-}
-
-interface Slot {
-	placeId: number;
-	placeName: string;
-	time: string;
-}
-
-interface DaySchema {
-	weekday: string;
-	slots: Slot[];
-}
-
-interface NormalizedRow {
-	placeId: number;
-	placeName: string;
-	time: string;
-	dates: Record<string, Publisher[]>;
-}
+import type { DaySchema, WeekdayDataItem, NormalizedRow } from "@/interfaces";
 
 function normalizeSchedule(
 	day: DaySchema,
@@ -86,11 +57,14 @@ function normalizeSchedule(
 export default function ScheduleWeekDay({
 	day,
 	weekdayData,
+	index,
 }: {
 	day: DaySchema;
 	weekdayData: WeekdayDataItem[];
+	index: number;
 }) {
 	const { people } = peopleStore();
+	const [isEditing, setIsEditing] = useState(false);
 
 	const tableData = useMemo(
 		() => normalizeSchedule(day, weekdayData),
@@ -103,16 +77,38 @@ export default function ScheduleWeekDay({
 
 	const addNewPlace = () => {
 		console.log("Add new place clicked", day);
+		console.log("Add new place clicked", index);
 	};
 
 	return (
 		<>
 			{people.length && weekdayData?.length && (
 				<Box sx={{ gap: 2, display: "flex", flexDirection: "column" }}>
-					<Box sx={{ display: "flex", justifyContent: "center" }}>
-						<Typography variant="subtitle1" fontWeight={700}>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							position: "relative",
+						}}
+					>
+						<Typography
+							variant="subtitle1"
+							fontWeight={700}
+							sx={{ flexGrow: 1, textAlign: "center" }}
+						>
 							{pt[day.weekday.toLowerCase() as keyof typeof pt]}
 						</Typography>
+
+						<IconButton
+							onClick={() => setIsEditing(!isEditing)}
+							sx={{ position: "absolute", right: 0 }}
+						>
+							{isEditing ? (
+								<CloseIcon sx={{ fontSize: "1.2rem", color: colors.error }} />
+							) : (
+								<EditIcon sx={{ fontSize: "1.2rem", color: colors.primary }} />
+							)}
+						</IconButton>
 					</Box>
 
 					<TableContainer component={Paper}>
@@ -157,18 +153,24 @@ export default function ScheduleWeekDay({
 												}}
 											>
 												<div>
-													<Typography variant="body2" fontWeight={700}>
+													<Typography
+														variant="body2"
+														fontWeight={700}
+														color={colors.textSubtitles}
+													>
 														{row.placeName}
 													</Typography>
 
 													<Typography variant="body1">{row.time}</Typography>
 												</div>
 
-												<IconButton>
-													<DeleteIcon
-														sx={{ fontSize: "1.2rem", color: colors.error }}
-													/>
-												</IconButton>
+												{isEditing && (
+													<IconButton>
+														<DeleteIcon
+															sx={{ fontSize: "1.2rem", color: colors.error }}
+														/>
+													</IconButton>
+												)}
 											</Box>
 										</TableCell>
 
@@ -190,29 +192,40 @@ export default function ScheduleWeekDay({
 													}}
 												>
 													{(row.dates[date] || []).map((pub, idx) => (
-														<FormControl
-															key={idx}
-															size="small"
+														<Box
 															sx={{ minWidth: "100%", maxWidth: 120 }}
+															key={idx}
 														>
-															<InputLabel
-																id={`select-pub-${row.placeId}-${date}-${idx}`}
-															>
-																Publicador
-															</InputLabel>
-															<Select
-																labelId={`select-pub-${row.placeId}-${date}-${idx}`}
-																value={pub.id}
-																label="Publicador"
-																fullWidth
-															>
-																{people.map((p) => (
-																	<MenuItem key={p.peopleid} value={p.peopleid}>
-																		{p.fullname}
-																	</MenuItem>
-																))}
-															</Select>
-														</FormControl>
+															{isEditing ? (
+																<FormControl
+																	size="small"
+																	sx={{ minWidth: "100%", maxWidth: 120 }}
+																>
+																	<InputLabel
+																		id={`select-pub-${row.placeId}-${date}-${idx}`}
+																	>
+																		Publicador
+																	</InputLabel>
+																	<Select
+																		labelId={`select-pub-${row.placeId}-${date}-${idx}`}
+																		value={pub.id}
+																		label="Publicador"
+																		fullWidth
+																	>
+																		{people.map((p) => (
+																			<MenuItem
+																				key={p.peopleid}
+																				value={p.peopleid}
+																			>
+																				{p.fullname}
+																			</MenuItem>
+																		))}
+																	</Select>
+																</FormControl>
+															) : (
+																<div>{pub.id || "-"}</div>
+															)}
+														</Box>
 													))}
 												</Box>
 											</TableCell>
@@ -223,15 +236,17 @@ export default function ScheduleWeekDay({
 						</Table>
 					</TableContainer>
 
-					<Box sx={{ display: "flex", gap: 2 }}>
-						<Button
-							variant="contained"
-							size="small"
-							onClick={() => addNewPlace()}
-						>
-							Adicionar
-						</Button>
-					</Box>
+					{isEditing && (
+						<Box sx={{ display: "flex", gap: 2 }}>
+							<Button
+								variant="contained"
+								size="small"
+								onClick={() => addNewPlace()}
+							>
+								Adicionar
+							</Button>
+						</Box>
+					)}
 				</Box>
 			)}
 		</>
