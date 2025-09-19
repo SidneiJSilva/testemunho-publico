@@ -7,6 +7,7 @@ export function generateMockSchema() {
 		updatedAt: "2024-08-15T00:00:00Z",
 		days: [
 			{
+				id: "83a0894d-86aa-41e7-9fce-9f4b2e70a10f",
 				weekday: "monday",
 				slots: [
 					{ placeId: 1, placeName: "Furadouro - CENTRO", time: "18:00-19:30" },
@@ -19,6 +20,7 @@ export function generateMockSchema() {
 				],
 			},
 			{
+				id: "1474a349-f617-4a60-8642-887134338937",
 				weekday: "tuesday",
 				slots: [
 					{
@@ -30,12 +32,14 @@ export function generateMockSchema() {
 				],
 			},
 			{
+				id: "75f44414-b6c5-4510-96ac-f0ba9f57832c",
 				weekday: "wednesday",
 				slots: [
 					{ placeId: 4, placeName: "Tribunal - Chafariz", time: "09:30-12:00" },
 				],
 			},
 			{
+				id: "a7de6f6e-b0bd-44e7-bda6-80533fce38af",
 				weekday: "thursday",
 				slots: [
 					{ placeId: 5, placeName: "Mercado - Capela", time: "09:45-12:00" },
@@ -47,6 +51,7 @@ export function generateMockSchema() {
 				],
 			},
 			{
+				id: "05507693-c6ea-4ca4-bdd5-9f214be6e321",
 				weekday: "friday",
 				slots: [
 					{ placeId: 4, placeName: "Tribunal - Chafariz", time: "09:30-12:00" },
@@ -60,6 +65,7 @@ export function generateMockSchema() {
 				],
 			},
 			{
+				id: "b6ca9b73-1282-423c-8180-bd098de7bd3f",
 				weekday: "saturday",
 				slots: [
 					{ placeId: 2, placeName: "Jardim Cáster", time: "09:45-12:00" },
@@ -78,6 +84,7 @@ export function generateMockSchema() {
 				],
 			},
 			{
+				id: "c85036ef-c16b-4af1-a304-acdacdcc660e",
 				weekday: "sunday",
 				slots: [
 					{ placeId: 1, placeName: "Furadouro - CENTRO", time: "09:45-12:00" },
