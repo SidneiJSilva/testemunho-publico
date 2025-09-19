@@ -1,17 +1,21 @@
 // src/components/organisms/PeopleDialog.tsx
-import { PeopleDialogHeader } from "@/components/molecules/PeopleDialogHeader";
-import { PeopleDialogContent } from "@/components/molecules/PeopleDialogContent";
 import {
 	Dialog,
 	DialogContent,
 	DialogActions,
 	Button,
-	CircularProgress,
 	Box,
+	Typography,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	type SelectChangeEvent,
 } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import { useSchema } from "@/hooks";
+
 import { useState } from "react";
+import { schemaStore } from "@/stores";
+import { formatTime } from "@/utils/transform";
 
 export default function PeopleDialog({
 	openDialog,
@@ -20,38 +24,75 @@ export default function PeopleDialog({
 	openDialog: boolean;
 	closeDialog: () => void;
 }) {
-	const [isDialogLoading, setIsDialogLoading] = useState(false);
+	const { places, timeRange } = schemaStore();
+	const [newPlaceId, setNewPlaceId] = useState<string>("");
+	const [newTimeId, setNewTimeId] = useState<string>("");
 
-	const saveAndClose = async () => {
+	const addAndClose = async () => {
 		closeDialog();
+	};
+
+	const handleNewPlaceChange = (event: SelectChangeEvent) => {
+		setNewPlaceId(event.target.value as string);
+	};
+
+	const handleNewTimeChange = (event: SelectChangeEvent) => {
+		setNewTimeId(event.target.value as string);
 	};
 
 	return (
 		<Dialog open={openDialog} onClose={closeDialog} maxWidth="sm" fullWidth>
-			{isDialogLoading && (
-				<Box
-					sx={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						width: "100%",
-						height: "100%",
-						bgcolor: "rgba(255,255,255,0.6)",
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						zIndex: 10,
-					}}
-				>
-					<CircularProgress size={70} />
-				</Box>
-			)}
-			<h1>HEADER</h1>
-
-			<DialogContent
-				sx={{ backgroundColor: (theme) => theme.palette.background.default }}
+			<Typography
+				variant="h6"
+				fontWeight={700}
+				component="div"
+				sx={{ padding: 2 }}
 			>
-				DIALOG CONTENT
+				Novo local / hora
+			</Typography>
+
+			<DialogContent>
+				<Box display="flex" gap={2}>
+					<FormControl size="small" sx={{ flex: 1 }}>
+						<InputLabel id="select-local">Local</InputLabel>
+
+						<Select
+							labelId="select-local"
+							id="local-select"
+							value={newPlaceId}
+							label="Local"
+							onChange={handleNewPlaceChange}
+						>
+							{Array.isArray(places) &&
+								places.map((place: any) => (
+									<MenuItem value={place.id} key={place.id}>
+										{place.name}
+									</MenuItem>
+								))}
+						</Select>
+					</FormControl>
+
+					<FormControl size="small" sx={{ flex: 1 }}>
+						<InputLabel id="select-time-range">Hora</InputLabel>
+
+						<Select
+							labelId="select-time-range"
+							id="time-range-select"
+							value={newTimeId}
+							label="Hora"
+							onChange={handleNewTimeChange}
+						>
+							{Array.isArray(timeRange) &&
+								timeRange.map((time: any) => (
+									<MenuItem value={time.id} key={time.id}>
+										{`${formatTime(time.startTime)}-${formatTime(
+											time.finishTime
+										)}`}
+									</MenuItem>
+								))}
+						</Select>
+					</FormControl>
+				</Box>
 			</DialogContent>
 
 			<DialogActions>
@@ -71,11 +112,11 @@ export default function PeopleDialog({
 					<Button
 						size="small"
 						variant="contained"
-						color="success"
-						endIcon={<SaveIcon />}
-						onClick={saveAndClose}
+						color="primary"
+						disabled={!newPlaceId || !newTimeId}
+						onClick={addAndClose}
 					>
-						Salvar
+						Adicionar
 					</Button>
 				</Box>
 			</DialogActions>

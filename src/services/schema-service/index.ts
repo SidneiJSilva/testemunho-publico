@@ -19,9 +19,9 @@ export class SchemaService {
 	}
 
 	static async fetchTimeRange() {
-		const { data, error } = await SupabaseService.from("tp_time_range").select(
-			"*"
-		);
+		const { data, error } = await SupabaseService.from("tp_time_range")
+			.select("*")
+			.order("start_time", { ascending: true });
 
 		if (error) {
 			throw new Error(`Error fetching time range: ${error.message}`);

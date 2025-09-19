@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export function snakeToCamel(str: string) {
 	return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 }
@@ -11,4 +13,8 @@ export function camelObject(array: any): any {
 		}
 		return newObj;
 	});
+}
+
+export function formatTime(timeString: string) {
+	return dayjs(timeString, "HH:mm:ss").format("HH:mm");
 }
