@@ -1,19 +1,21 @@
 import ScheduleWeekDay from "../molecules/ShceduleWeekDay";
 import { Box, Typography } from "@mui/material";
 import LoadingFullScreen from "@/components/atoms/loadings/LoadingFullScreen";
+import NewPlaceDialog from "./NewPlaceDialog";
 
 import { colors } from "@/constants/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { peopleStore, schemaStore, scheduleStore } from "@/stores";
+import { peopleStore, schemaStore, scheduleStore, dialogStore } from "@/stores";
 import { useEffect } from "react";
 
 export default function ScheduleList() {
 	const { isLoading } = peopleStore();
 	const { schema, isLoading: schemaLoading } = schemaStore();
 	const { startDate, endDate, setDates, schedule } = scheduleStore();
+	const { openNewPlaceDialog, setOpenNewPlaceDialog } = dialogStore();
 
 	useEffect(() => {
 		const startDate = dayjs().startOf("week").add(1, "day");
@@ -85,14 +87,18 @@ export default function ScheduleList() {
 					</Box>
 
 					{schema?.days &&
-						schema.days.map((day: any, idx: number) => (
+						schema.days.map((day: any) => (
 							<ScheduleWeekDay
 								key={day.weekday}
 								day={day}
-								index={idx}
 								weekdayData={schedule[day.weekday.toLowerCase()]}
 							/>
 						))}
+
+					<NewPlaceDialog
+						openDialog={openNewPlaceDialog}
+						closeDialog={() => setOpenNewPlaceDialog(false)}
+					/>
 				</Box>
 			)}
 		</>

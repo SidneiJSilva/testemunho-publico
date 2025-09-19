@@ -20,6 +20,7 @@ export interface Slot {
 }
 
 export interface DaySchema {
+	id: string;
 	weekday: string;
 	slots: Slot[];
 }

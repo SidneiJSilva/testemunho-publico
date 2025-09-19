@@ -19,12 +19,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { peopleStore } from "@/stores";
+import { peopleStore, schemaStore, dialogStore } from "@/stores";
 import { useMemo, useState } from "react";
 import { pt } from "@/i18n/pt";
 import dayjs from "dayjs";
 import { colors } from "@/constants/colors";
-
 import type { DaySchema, WeekdayDataItem, NormalizedRow } from "@/interfaces";
 
 function normalizeSchedule(
@@ -57,13 +56,13 @@ function normalizeSchedule(
 export default function ScheduleWeekDay({
 	day,
 	weekdayData,
-	index,
 }: {
 	day: DaySchema;
 	weekdayData: WeekdayDataItem[];
-	index: number;
 }) {
 	const { people } = peopleStore();
+	const { setWeekDayId } = schemaStore();
+	const { setOpenNewPlaceDialog } = dialogStore();
 	const [isEditing, setIsEditing] = useState(false);
 
 	const tableData = useMemo(
@@ -76,8 +75,8 @@ export default function ScheduleWeekDay({
 	}, [weekdayData]);
 
 	const addNewPlace = () => {
-		console.log("Add new place clicked", day);
-		console.log("Add new place clicked", index);
+		setWeekDayId(day.id);
+		setOpenNewPlaceDialog(true);
 	};
 
 	return (
