@@ -7,9 +7,9 @@ const Schedule = () => {
 	const { fetchPeople } = usePeople();
 	const { people } = peopleStore();
 
-	const { fetchSchema } = useSchema();
+	const { fetchSchema, fetchPlaces, fetchTimeRange } = useSchema();
 	const { fetchSchedule } = useSchedule();
-	const { schema } = schemaStore();
+	const { schema, places, timeRange } = schemaStore();
 	const { schedule } = scheduleStore();
 
 	useEffect(() => {
@@ -17,6 +17,8 @@ const Schedule = () => {
 			if (people.length === 0) await fetchPeople();
 			if (!schema) await fetchSchema();
 			if (!schedule) await fetchSchedule();
+			if (Array.isArray(places) && !places.length) await fetchPlaces();
+			if (Array.isArray(timeRange) && !timeRange.length) await fetchTimeRange();
 		};
 		fetchData();
 	}, []);

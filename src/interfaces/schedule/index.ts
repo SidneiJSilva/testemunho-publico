@@ -30,3 +30,12 @@ export interface NormalizedRow {
 	time: string;
 	dates: Record<string, Publisher[]>;
 }
+
+export interface Place {
+	id: number;
+	name: string;
+}
+
+export interface Places {
+	places: Place[];
+}
