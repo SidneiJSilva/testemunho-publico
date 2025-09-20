@@ -20,6 +20,7 @@ export interface Slot {
 }
 
 export interface DaySchema {
+	id: string;
 	weekday: string;
 	slots: Slot[];
 }
@@ -29,4 +30,13 @@ export interface NormalizedRow {
 	placeName: string;
 	time: string;
 	dates: Record<string, Publisher[]>;
+}
+
+export interface Place {
+	id: number;
+	name: string;
+}
+
+export interface Places {
+	places: Place[];
 }

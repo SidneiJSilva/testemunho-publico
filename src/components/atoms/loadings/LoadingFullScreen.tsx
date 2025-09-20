@@ -19,7 +19,7 @@ export default function LoadingFullScreen({
 				justifyContent: "center",
 				alignItems: "center",
 				backgroundColor: "rgba(255, 255, 255, 0.6)", // leve overlay opcional
-				zIndex: 1300, // acima da maioria dos elementos
+				zIndex: 1300,
 			}}
 		>
 			<CircularProgress size={size} />
