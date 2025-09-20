@@ -6,15 +6,19 @@ const isDevelopment = import.meta.env.DEV;
 
 interface DialogState {
 	openNewPlaceDialog: boolean;
+	isDialogLoading: boolean;
 
 	setOpenNewPlaceDialog: (openNewPlaceDialog: boolean) => void;
+	setIsDialogLoading: (isDialogLoading: boolean) => void;
 }
 
 const storeCreator: StateCreator<DialogState> = (set) => ({
 	openNewPlaceDialog: false,
+	isDialogLoading: false,
 
 	setOpenNewPlaceDialog: (openNewPlaceDialog: boolean) =>
 		set({ openNewPlaceDialog }),
+	setIsDialogLoading: (isDialogLoading: boolean) => set({ isDialogLoading }),
 });
 
 const createStoreWithMiddleware = isDevelopment

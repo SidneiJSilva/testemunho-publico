@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
-import { generateMockSchema } from "./schemaMock";
+// import { generateMockSchema } from "./schemaMock";
+// import { schemaStore } from "@/stores";
 
 const PT_TO_EN: Record<string, string> = {
 	"segunda-feira": "monday",
@@ -58,9 +59,11 @@ function normalizeSchema(schema: any): Record<string, any[]> {
 	return {};
 }
 
-export function generateMockSchedule(start: Dayjs, end: Dayjs) {
-	const rawSchema = generateMockSchema();
-	const schema = normalizeSchema(rawSchema);
+export function generateMockSchedule(start: Dayjs, end: Dayjs, schema: any) {
+	// const { schema } = schemaStore();
+	// const rawSchema = generateMockSchema();
+	schema = normalizeSchema(schema);
+	console.log("INSIDE SCHEDULE MOCK => ", schema);
 	const schedule: Record<string, any[]> = {};
 
 	let current = start.startOf("day");

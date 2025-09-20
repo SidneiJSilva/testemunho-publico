@@ -32,6 +32,7 @@ function normalizeSchedule(
 ): NormalizedRow[] {
 	const locationsMap: Record<number, NormalizedRow> = {};
 
+	if (!weekdayData) return [];
 	weekdayData.forEach((dateItem) => {
 		dateItem.assignments.forEach((assignment) => {
 			if (!locationsMap[assignment.locationId]) {

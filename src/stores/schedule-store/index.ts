@@ -10,7 +10,7 @@ interface ScheduleStore {
 	schedule: any; // aqui você pode tipar melhor depois
 	isLoading: boolean;
 
-	setDates: (start: Dayjs, end: Dayjs) => void;
+	setDates: (start: Dayjs, end: Dayjs, schema: any) => void;
 	generateSchedule: () => void;
 }
 
@@ -21,16 +21,16 @@ export const scheduleStore = create<ScheduleStore>()(
 		schedule: {},
 		isLoading: false,
 
-		setDates: (start, end) => {
+		setDates: (start, end, schema) => {
 			set({ startDate: start, endDate: end });
 			// recalcula sempre que altera
-			const schedule = generateMockSchedule(start, end);
+			const schedule = generateMockSchedule(start, end, schema);
 			set({ schedule });
 		},
 
 		generateSchedule: () => {
 			const { startDate, endDate } = get();
-			const schedule = generateMockSchedule(startDate, endDate);
+			const schedule = generateMockSchedule(startDate, endDate, { schema: {} });
 			set({ schedule });
 		},
 	}))

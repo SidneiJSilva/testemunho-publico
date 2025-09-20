@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import LoadingFullScreen from "@/components/atoms/loadings/LoadingFullScreen";
 import NewPlaceDialog from "./NewPlaceDialog";
+import Loading from "../atoms/loadings/Loading";
 
 import { colors } from "@/constants/colors";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -26,20 +27,23 @@ export default function ScheduleList() {
 		schemaList,
 		schemaId,
 		setSchemaId,
+		setWeekDayId,
 	} = schemaStore();
 	const { startDate, endDate, setDates, schedule } = scheduleStore();
 	const { openNewPlaceDialog, setOpenNewPlaceDialog } = dialogStore();
 
 	useEffect(() => {
+		if (!schema) return;
+
 		const startDate = dayjs().startOf("week").add(1, "day");
 		const endDate = dayjs().startOf("week").add(4, "week");
 
-		setDates(startDate, endDate);
-	}, []);
+		setDates(startDate, endDate, schema);
+	}, [schema]);
 
 	return (
 		<>
-			{isLoading || schemaLoading ? (
+			{isLoading ? (
 				<LoadingFullScreen />
 			) : (
 				<Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -91,7 +95,7 @@ export default function ScheduleList() {
 									value={startDate}
 									onChange={(newValue) => {
 										if (!newValue) return;
-										setDates(newValue, endDate);
+										setDates(newValue, endDate, schema);
 									}}
 								/>
 							</LocalizationProvider>
@@ -110,25 +114,34 @@ export default function ScheduleList() {
 									value={endDate}
 									onChange={(newValue) => {
 										if (!newValue) return;
-										setDates(startDate, newValue);
+										setDates(startDate, newValue, schema);
 									}}
 								/>
 							</LocalizationProvider>
 						</Box>
 					</Box>
 
-					{schema?.days &&
+					{schemaLoading ? (
+						<Box sx={{ position: "relative", minHeight: "5rem" }}>
+							<Loading />
+						</Box>
+					) : (
+						schema?.days &&
 						schema.days.map((day: any) => (
 							<ScheduleWeekDay
 								key={day.weekday}
 								day={day}
 								weekdayData={schedule[day.weekday.toLowerCase()]}
 							/>
-						))}
+						))
+					)}
 
 					<NewPlaceDialog
 						openDialog={openNewPlaceDialog}
-						closeDialog={() => setOpenNewPlaceDialog(false)}
+						closeDialog={() => {
+							setWeekDayId("");
+							setOpenNewPlaceDialog(false);
+						}}
 					/>
 				</Box>
 			)}
