@@ -3,10 +3,12 @@ import { SchemaService } from "@/services/schema-service";
 import { camelObject } from "@/utils/transform";
 
 export function useSchema() {
-	const { schema, setSchema, setPlaces, setTimeRange } = schemaStore();
+	const { schema, setSchema, setPlaces, setTimeRange, setSchemaList } =
+		schemaStore();
 
-	const fetchSchema = async () => {
-		const data = await SchemaService.fetchSchema();
+	const fetchSchema = async (schemaId: string) => {
+		const data = await SchemaService.fetchSchema(schemaId);
+
 		setSchema(data);
 	};
 
@@ -22,5 +24,12 @@ export function useSchema() {
 		setTimeRange(formatedTimes);
 	};
 
-	return { schema, fetchSchema, fetchPlaces, fetchTimeRange };
+	const fetchSchemaList = async () => {
+		const schemaList = await SchemaService.fetchSchemaList();
+		const formatedSchemaList = camelObject(schemaList);
+
+		setSchemaList(formatedSchemaList);
+	};
+
+	return { schema, fetchSchema, fetchPlaces, fetchTimeRange, fetchSchemaList };
 }

@@ -1,11 +1,17 @@
-import { generateMockSchema } from "@/utils/schemaMock";
 import SupabaseService from "@/services/supabase-service";
-import type { Places, TimeRange } from "@/interfaces";
+import type { Places, TimeRange, SchemaListItem } from "@/interfaces";
 
 export class SchemaService {
-	static async fetchSchema() {
-		// futuramente: chamada ao Supabase
-		return generateMockSchema();
+	static async fetchSchema(schemaId: string) {
+		const { data, error } = await SupabaseService.rpc("get_schema_with_days", {
+			schema_uuid: schemaId,
+		});
+
+		if (error) {
+			throw new Error(`Error fetching shcema: ${error.message}`);
+		}
+
+		return data;
 	}
 
 	static async fetchPlaces() {
@@ -28,5 +34,17 @@ export class SchemaService {
 		}
 
 		return data as unknown as TimeRange;
+	}
+
+	static async fetchSchemaList() {
+		const { data, error } = await SupabaseService.from("tp_schedule_schema")
+			.select("*")
+			.order("created_at", { ascending: false });
+
+		if (error) {
+			throw new Error(`Error fetching schema list: ${error.message}`);
+		}
+
+		return data as SchemaListItem[];
 	}
 }

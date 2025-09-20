@@ -7,3 +7,10 @@ export interface Times {
 export interface TimeRange {
 	timeRange: Times[];
 }
+
+export interface SchemaListItem {
+	id: string;
+	name: string;
+	description: string;
+	createdAt: string;
+}

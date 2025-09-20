@@ -3,8 +3,6 @@ export function generateMockSchema() {
 		id: "schema-001",
 		name: "Testemunho Público - Estrutura",
 		description: "Schema base dos locais e horários de testemunho público",
-		createdAt: "2024-08-01T00:00:00Z",
-		updatedAt: "2024-08-15T00:00:00Z",
 		days: [
 			{
 				id: "83a0894d-86aa-41e7-9fce-9f4b2e70a10f",

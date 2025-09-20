@@ -1,5 +1,12 @@
 import ScheduleWeekDay from "../molecules/ShceduleWeekDay";
-import { Box, Typography } from "@mui/material";
+import {
+	Box,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	Typography,
+} from "@mui/material";
 import LoadingFullScreen from "@/components/atoms/loadings/LoadingFullScreen";
 import NewPlaceDialog from "./NewPlaceDialog";
 
@@ -13,7 +20,13 @@ import { useEffect } from "react";
 
 export default function ScheduleList() {
 	const { isLoading } = peopleStore();
-	const { schema, isLoading: schemaLoading } = schemaStore();
+	const {
+		schema,
+		isLoading: schemaLoading,
+		schemaList,
+		schemaId,
+		setSchemaId,
+	} = schemaStore();
 	const { startDate, endDate, setDates, schedule } = scheduleStore();
 	const { openNewPlaceDialog, setOpenNewPlaceDialog } = dialogStore();
 
@@ -38,8 +51,8 @@ export default function ScheduleList() {
 						sx={{
 							display: "flex",
 							alignItems: "center",
-							justifyContent: "center",
-							gap: "0.5rem",
+							justifyContent: "space-between",
+							gap: 2,
 							padding: ".5rem",
 							paddingTop: ".75rem",
 							backgroundColor: "white",
@@ -48,42 +61,60 @@ export default function ScheduleList() {
 							borderRadius: ".5rem",
 						}}
 					>
-						<LocalizationProvider
-							dateAdapter={AdapterDayjs}
-							adapterLocale="pt-br"
-						>
-							<DatePicker
-								label="Data inicial"
-								format="DD/MM/YYYY"
-								slotProps={{
-									textField: { size: "small" },
-								}}
-								value={startDate}
-								onChange={(newValue) => {
-									if (!newValue) return;
-									setDates(newValue, endDate);
-								}}
-							/>
-						</LocalizationProvider>
+						<FormControl size="small" sx={{ minWidth: 120, flex: 1 }}>
+							<InputLabel id="select-family-member">Familiar</InputLabel>
 
-						<LocalizationProvider
-							dateAdapter={AdapterDayjs}
-							adapterLocale="pt-br"
-						>
-							<DatePicker
-								label="Data final"
-								format="DD/MM/YYYY"
-								minDate={startDate || dayjs()}
-								slotProps={{
-									textField: { size: "small" },
-								}}
-								value={endDate}
-								onChange={(newValue) => {
-									if (!newValue) return;
-									setDates(startDate, newValue);
-								}}
-							/>
-						</LocalizationProvider>
+							<Select
+								labelId="select-family-member"
+								id="family-member-select"
+								value={schemaId}
+								label="Familiar"
+								onChange={(e) => setSchemaId(e.target.value as string)}
+							>
+								{schemaList.map((s) => (
+									<MenuItem value={s.id}>{s.name}</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+
+						<Box display="flex" gap={2} justifyContent="center">
+							<LocalizationProvider
+								dateAdapter={AdapterDayjs}
+								adapterLocale="pt-br"
+							>
+								<DatePicker
+									label="Data inicial"
+									format="DD/MM/YYYY"
+									slotProps={{
+										textField: { size: "small" },
+									}}
+									value={startDate}
+									onChange={(newValue) => {
+										if (!newValue) return;
+										setDates(newValue, endDate);
+									}}
+								/>
+							</LocalizationProvider>
+
+							<LocalizationProvider
+								dateAdapter={AdapterDayjs}
+								adapterLocale="pt-br"
+							>
+								<DatePicker
+									label="Data final"
+									format="DD/MM/YYYY"
+									minDate={startDate || dayjs()}
+									slotProps={{
+										textField: { size: "small" },
+									}}
+									value={endDate}
+									onChange={(newValue) => {
+										if (!newValue) return;
+										setDates(startDate, newValue);
+									}}
+								/>
+							</LocalizationProvider>
+						</Box>
 					</Box>
 
 					{schema?.days &&
