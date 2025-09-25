@@ -66,13 +66,13 @@ export default function ScheduleList() {
 						}}
 					>
 						<FormControl size="small" sx={{ minWidth: 120, flex: 1 }}>
-							<InputLabel id="select-family-member">Familiar</InputLabel>
+							<InputLabel id="select-family-member">Schema</InputLabel>
 
 							<Select
 								labelId="select-family-member"
 								id="family-member-select"
 								value={schemaId}
-								label="Familiar"
+								label="Schema"
 								onChange={(e) => setSchemaId(e.target.value as string)}
 							>
 								{schemaList.map((s) => (
